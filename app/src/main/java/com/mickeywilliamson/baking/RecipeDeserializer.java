@@ -21,8 +21,8 @@ public class RecipeDeserializer implements JsonDeserializer<Recipe> {
         final int servings = jsonObject.get("servings").getAsInt();
         final String image = jsonObject.get("image").getAsString();
 
-        ArrayList<Recipe.Ingredient> ingredients = context.deserialize(jsonObject.get("ingredients"), Recipe.Ingredient.class);
-        ArrayList<Recipe.Step> steps = context.deserialize(jsonObject.get("steps"), Recipe.Step.class);
+        ArrayList<Ingredient> ingredients = context.deserialize(jsonObject.get("ingredients"), Ingredient.class);
+        ArrayList<Step> steps = context.deserialize(jsonObject.get("steps"), Step.class);
 
         final Recipe recipe = new Recipe();
         recipe.setId(id);

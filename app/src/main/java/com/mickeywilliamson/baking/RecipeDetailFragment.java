@@ -27,6 +27,7 @@ public class RecipeDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
+    private Recipe mRecipe;
     private DummyContent.DummyItem mItem;
 
     /**
