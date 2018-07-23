@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Recipe implements Parcelable{
+public class Recipe implements Parcelable {
 
     public static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/";
     public static final String PATH = "topher/2017/May/59121517_baking/baking.json";
@@ -30,18 +30,6 @@ public class Recipe implements Parcelable{
         this.image = image;
         this.ingredients = ingredients;
         this.steps = steps;
-    }
-
-    Recipe(Parcel in) {
-        this.id = in.readInt();
-        this.name = in.readString();
-        this.servings = in.readInt();
-        this.image = in.readString();
-        this.ingredients = new ArrayList<Ingredient>();
-        in.readTypedList(ingredients, Ingredient.CREATOR);
-        this.steps = new ArrayList<Step>();
-        in.readTypedList(steps, Step.CREATOR);
-
     }
 
     public int getId() {
@@ -97,6 +85,25 @@ public class Recipe implements Parcelable{
         return name;
     }
 
+    protected Recipe(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        servings = in.readInt();
+        image = in.readString();
+        if (in.readByte() == 0x01) {
+            ingredients = new ArrayList<Ingredient>();
+            in.readList(ingredients, Ingredient.class.getClassLoader());
+        } else {
+            ingredients = null;
+        }
+        if (in.readByte() == 0x01) {
+            steps = new ArrayList<Step>();
+            in.readList(steps, Step.class.getClassLoader());
+        } else {
+            steps = null;
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -108,16 +115,28 @@ public class Recipe implements Parcelable{
         parcel.writeString(name);
         parcel.writeInt(servings);
         parcel.writeString(image);
-        parcel.writeTypedList(ingredients);
-        parcel.writeTypedList(steps);
+        if (ingredients == null) {
+            parcel.writeByte((byte) (0x00));
+        } else {
+            parcel.writeByte((byte) (0x01));
+            parcel.writeList(ingredients);
+        }
+        if (steps == null) {
+            parcel.writeByte((byte) (0x00));
+        } else {
+            parcel.writeByte((byte) (0x01));
+            parcel.writeList(steps);
+        }
     }
 
-    static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
-
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        @Override
         public Recipe createFromParcel(Parcel in) {
             return new Recipe(in);
         }
 
+        @Override
         public Recipe[] newArray(int size) {
             return new Recipe[size];
         }
