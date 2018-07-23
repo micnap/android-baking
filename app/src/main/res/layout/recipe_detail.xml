@@ -9,11 +9,7 @@
               android:padding="16dp"
               tools:context=".RecipeDetailFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/steps_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"/>
+
 
     <TextView
         android:id="@+id/recipe_servings"
@@ -32,10 +28,23 @@
     <ListView
         android:id="@+id/ingredients_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:divider="@null"
         android:dividerHeight="0dp"/>
 
+    <TextView
+        android:id="@+id/step_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/step_header"
+        android:textSize="22sp"
+        android:textStyle="bold"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/steps_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"/>
 
 
 </LinearLayout>
