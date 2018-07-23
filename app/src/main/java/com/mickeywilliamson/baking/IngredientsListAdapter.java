@@ -1,6 +1,7 @@
 package com.mickeywilliamson.baking;
 
 import android.content.Context;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,9 +50,10 @@ public class IngredientsListAdapter extends BaseAdapter {
 
         Ingredient currentIngredient = (Ingredient) getItem(i);
 
-        viewHolder.tvIngredientQuantity.setText(String.valueOf(currentIngredient.getQuantity()));
+        viewHolder.tvIngredientQuantity.setText(currentIngredient.getQuantity());
         viewHolder.tvIngredientMeasure.setText(currentIngredient.getMeasure());
-        viewHolder.tvIngredientName.setText(currentIngredient.getIngredient());
+        String upperString = currentIngredient.getIngredient().substring(0,1).toUpperCase() + currentIngredient.getIngredient().substring(1);
+        viewHolder.tvIngredientName.setText(upperString);
 
         return view;
     }

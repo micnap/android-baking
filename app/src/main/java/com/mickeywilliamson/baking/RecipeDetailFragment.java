@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,9 @@ public class RecipeDetailFragment extends Fragment {
      */
     private Recipe mRecipe;
 
+    private RecyclerView rvStepsList;
+
+    private StepsListAdapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,6 +60,7 @@ public class RecipeDetailFragment extends Fragment {
                 appBarLayout.setTitle(mRecipe.getName());
             }
         }
+
     }
 
     @Override
@@ -62,13 +68,20 @@ public class RecipeDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
         if (mRecipe != null) {
-            ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mRecipe.getName());
             ((TextView) rootView.findViewById(R.id.recipe_servings)).setText("Serving size: " + String.valueOf(mRecipe.getServings()));
 
             IngredientsListAdapter ingredientsListAdapter = new IngredientsListAdapter(getActivity(), mRecipe.getIngredients());
             ((ListView) rootView.findViewById(R.id.ingredients_list)).setAdapter(ingredientsListAdapter);
+
+            rvStepsList = (RecyclerView) rootView.findViewById(R.id.steps_list);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            rvStepsList.setLayoutManager(layoutManager);
+            rvStepsList.setHasFixedSize(true);
+            mAdapter = new StepsListAdapter(mRecipe.getSteps());
+            Log.d("STEPS", String.valueOf(mRecipe.getSteps().size()));
+            rvStepsList.setAdapter(mAdapter);
+
         }
 
         return rootView;

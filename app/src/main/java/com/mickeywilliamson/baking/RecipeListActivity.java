@@ -65,7 +65,6 @@ public class RecipeListActivity extends AppCompatActivity {
         loadJSON(this, recyclerView);
 
 
-
     }
 
     // https://medium.com/@dds861/json-parsing-using-retrofit-and-recycleview-2300d9fdcf15
@@ -85,6 +84,7 @@ public class RecipeListActivity extends AppCompatActivity {
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
 
                 ArrayList<Recipe> recipes = response.body();
+
                 adapter = new SimpleItemRecyclerViewAdapter(parent, recipes, mTwoPane);
                 recyclerView.setAdapter(adapter);
             }

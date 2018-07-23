@@ -3,7 +3,11 @@ package com.mickeywilliamson.baking;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Step implements Parcelable {
+
+    @SerializedName("id")
     private int stepId;
     private String shortDescription;
     private String description;
