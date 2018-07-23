@@ -28,7 +28,7 @@
                                             android:layout_marginRight="16dp"
                                             app:layoutManager="LinearLayoutManager"
                                             tools:context="com.mickeywilliamson.baking.RecipeListActivity"
-                                            tools:listitem="@layout/recipe_list_content"/>
+                                            tools:listitem="@layout/recipe_list_row"/>
 
     <FrameLayout
         android:id="@+id/recipe_detail_container"

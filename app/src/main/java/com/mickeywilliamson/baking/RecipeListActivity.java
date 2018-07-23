@@ -125,7 +125,7 @@ public class RecipeListActivity extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recipe_list_content, parent, false);
+                    .inflate(R.layout.recipe_list_row, parent, false);
             return new ViewHolder(view);
         }
 
@@ -160,7 +160,7 @@ public class RecipeListActivity extends AppCompatActivity {
                 Recipe recipe = (Recipe) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, String.valueOf(recipe.getId()));
+                    arguments.putParcelable(RecipeDetailFragment.RECIPE, recipe);
                     RecipeDetailFragment fragment = new RecipeDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -169,7 +169,7 @@ public class RecipeListActivity extends AppCompatActivity {
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, RecipeDetailActivity.class);
-                    intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, String.valueOf(recipe.getId()));
+                    intent.putExtra(RecipeDetailFragment.RECIPE, recipe);
 
                     context.startActivity(intent);
                 }

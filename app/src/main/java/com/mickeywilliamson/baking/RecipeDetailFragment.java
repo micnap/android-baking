@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mickeywilliamson.baking.dummy.DummyContent;
@@ -22,13 +24,13 @@ public class RecipeDetailFragment extends Fragment {
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    public static final String ARG_ITEM_ID = "item_id";
+    public static final String RECIPE = "recipe";
 
     /**
      * The dummy content this fragment is presenting.
      */
     private Recipe mRecipe;
-    private DummyContent.DummyItem mItem;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -41,16 +43,16 @@ public class RecipeDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
+        if (getArguments().containsKey(RECIPE)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            mRecipe = getArguments().getParcelable(RECIPE);
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.content);
+                appBarLayout.setTitle(mRecipe.getName());
             }
         }
     }
@@ -61,8 +63,12 @@ public class RecipeDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
 
         // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.details);
+        if (mRecipe != null) {
+            ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mRecipe.getName());
+            ((TextView) rootView.findViewById(R.id.recipe_servings)).setText("Serving size: " + String.valueOf(mRecipe.getServings()));
+
+            IngredientsListAdapter ingredientsListAdapter = new IngredientsListAdapter(getActivity(), mRecipe.getIngredients());
+            ((ListView) rootView.findViewById(R.id.ingredients_list)).setAdapter(ingredientsListAdapter);
         }
 
         return rootView;
