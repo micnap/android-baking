@@ -5,28 +5,21 @@ import android.os.Parcelable;
 
 public class Ingredient implements Parcelable {
 
-    private int quantity;
+    private double quantity;
     private String measure;
     private String ingredient;
 
-    public Ingredient(int quantity, String measure, String ingredient) {
+    public Ingredient(double quantity, String measure, String ingredient) {
         this.quantity = quantity;
         this.measure = measure;
         this.ingredient = ingredient;
     }
 
-    Ingredient(Parcel in) {
-        this.quantity = in.readInt();
-        this.measure = in.readString();
-        this.ingredient = in.readString();
-    }
-
-
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 
@@ -46,25 +39,32 @@ public class Ingredient implements Parcelable {
         this.ingredient = ingredient;
     }
 
+    protected Ingredient(Parcel in) {
+        quantity = in.readDouble();
+        measure = in.readString();
+        ingredient = in.readString();
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(quantity);
-        parcel.writeString(measure);
-        parcel.writeString(ingredient);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(quantity);
+        dest.writeString(measure);
+        dest.writeString(ingredient);
     }
 
-    static final Parcelable.Creator<Ingredient> CREATOR
-            = new Parcelable.Creator<Ingredient>() {
-
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {
+        @Override
         public Ingredient createFromParcel(Parcel in) {
             return new Ingredient(in);
         }
 
+        @Override
         public Ingredient[] newArray(int size) {
             return new Ingredient[size];
         }

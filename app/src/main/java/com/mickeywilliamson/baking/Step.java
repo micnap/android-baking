@@ -18,14 +18,6 @@ public class Step implements Parcelable {
         this.thumbnailURL = thumbnailURL;
     }
 
-    Step(Parcel in) {
-        this.stepId = in.readInt();
-        this.shortDescription = in.readString();
-        this.description = in.readString();
-        this.videoURL = in.readString();
-        this.thumbnailURL = in.readString();
-    }
-
     public int getStepId() {
         return stepId;
     }
@@ -66,27 +58,36 @@ public class Step implements Parcelable {
         this.thumbnailURL = thumbnailUrl;
     }
 
+    protected Step(Parcel in) {
+        stepId = in.readInt();
+        shortDescription = in.readString();
+        description = in.readString();
+        videoURL = in.readString();
+        thumbnailURL = in.readString();
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(stepId);
-        parcel.writeString(shortDescription);
-        parcel.writeString(description);
-        parcel.writeString(videoURL);
-        parcel.writeString(thumbnailURL);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(stepId);
+        dest.writeString(shortDescription);
+        dest.writeString(description);
+        dest.writeString(videoURL);
+        dest.writeString(thumbnailURL);
     }
 
-    static final Parcelable.Creator<Step> CREATOR
-            = new Parcelable.Creator<Step>() {
-
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Step> CREATOR = new Parcelable.Creator<Step>() {
+        @Override
         public Step createFromParcel(Parcel in) {
             return new Step(in);
         }
 
+        @Override
         public Step[] newArray(int size) {
             return new Step[size];
         }
