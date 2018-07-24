@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,7 +25,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.squareup.picasso.Transformation;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -47,6 +53,8 @@ public class RecipeListActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private ArrayList<Recipe> recipes;
     private SimpleItemRecyclerViewAdapter adapter;
+
+    private static final String TAG = StepsListAdapter.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,35 +134,18 @@ public class RecipeListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mRecipeIdView.setText(String.valueOf(mRecipes.get(position).getId()));
+
             holder.mRecipeNameView.setText(mRecipes.get(position).getName());
 
 
-            final Resources res = holder.mLinearLayout.getResources();
+            String image = mRecipes.get(position).getImage();
 
-            Target target = new Target() {
-
-
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    Drawable drawable = new BitmapDrawable(res, bitmap);
-                    holder.mLinearLayout.setBackground(drawable);
-                }
-
-                @Override
-                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                }
-
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                }
-            };
-
-            holder.mLinearLayout.setTag(target);
-            Picasso.get().load(R.drawable.recipe_bg_placeholder).resize(400, 200).centerInside().into(target);
-
+            // An empty image will cause a crash by Picasso on load.  If image is null, it supplies the error image.
+            Picasso.get()
+                    .load(image.isEmpty() ? null : image)
+                    .placeholder(Recipe.getPlaceholderImage(mRecipes.get(position).getId()))
+                    .error(Recipe.getPlaceholderImage(mRecipes.get(position).getId()))
+                    .into(holder.mRecipeImageView);
 
             holder.itemView.setTag(mRecipes.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -166,16 +157,15 @@ public class RecipeListActivity extends AppCompatActivity {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mRecipeIdView;
+
             final TextView mRecipeNameView;
-            final LinearLayout mLinearLayout;
+            final ImageView mRecipeImageView;
 
 
             ViewHolder(View view) {
                 super(view);
-                mRecipeIdView = (TextView) view.findViewById(R.id.recipe_id);
                 mRecipeNameView = (TextView) view.findViewById(R.id.recipe_name);
-                mLinearLayout = (LinearLayout) view.findViewById(R.id.recipe_list_linearlayout);
+                mRecipeImageView = (ImageView) view.findViewById(R.id.recipe_image);
             }
         }
 

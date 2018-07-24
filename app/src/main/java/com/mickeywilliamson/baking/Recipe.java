@@ -141,4 +141,20 @@ public class Recipe implements Parcelable {
             return new Recipe[size];
         }
     };
+
+    public static int getPlaceholderImage(int id) {
+
+        switch (id) {
+            case 1:
+                return R.drawable.nutella_pie;
+            case 2:
+                return R.drawable.brownie;
+            case 3:
+                return R.drawable.nutella_pie;
+            case 4:
+                return R.drawable.nutella_pie;
+            default:
+                return R.drawable.nutella_pie;
+        }
+    }
 }
