@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -78,6 +79,12 @@ public class RecipeListActivity extends AppCompatActivity {
 
         loadJSON(this, recyclerView);
 
+        int spanCount = 2;
+        if (mTwoPane) {
+            spanCount = 1;
+        }
+        GridLayoutManager manager = new GridLayoutManager(this, spanCount);
+        recyclerView.setLayoutManager(manager);
 
     }
 
@@ -101,6 +108,7 @@ public class RecipeListActivity extends AppCompatActivity {
 
                 adapter = new SimpleItemRecyclerViewAdapter(parent, recipes, mTwoPane);
                 recyclerView.setAdapter(adapter);
+
             }
 
             @Override
