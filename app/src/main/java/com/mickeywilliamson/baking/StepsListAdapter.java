@@ -51,12 +51,12 @@ public class StepsListAdapter extends RecyclerView.Adapter<StepsListAdapter.Step
     public static class StepsViewHolder extends RecyclerView.ViewHolder {
         TextView tvStepId;
         TextView tvStepShortDescription;
+        TextView tvStepDescription;
 
 
         public StepsViewHolder(View itemView) {
             super(itemView);
-
-            tvStepId = itemView.findViewById(R.id.step_id);
+            tvStepId =itemView.findViewById(R.id.step_id);
             tvStepShortDescription = itemView.findViewById(R.id.step_short_description);
         }
     }
