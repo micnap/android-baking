@@ -1,6 +1,9 @@
 package com.mickeywilliamson.baking;
 
 import android.app.Activity;
+import android.app.ExpandableListActivity;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,10 +15,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.mickeywilliamson.baking.dummy.DummyContent;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A fragment representing a single Recipe detail screen.
@@ -35,9 +45,10 @@ public class RecipeDetailFragment extends Fragment {
      */
     private Recipe mRecipe;
 
-    private RecyclerView rvStepsList;
+    private ExpandableListView expListView;
+    private RecipeExpandableListAdapter mAdapter;
+    private ArrayList<String> headerList;
 
-    private StepsListAdapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -60,32 +71,57 @@ public class RecipeDetailFragment extends Fragment {
 
             Toolbar toolbar = (Toolbar) activity.findViewById(R.id.detail_toolbar);
             ((AppCompatActivity)activity).setSupportActionBar(toolbar);
-            toolbar.setTitle(mRecipe.getName());
-
+            if (toolbar != null) {
+                toolbar.setTitle(mRecipe.getName());
+            }
         }
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
 
-        if (mRecipe != null) {
-            ((TextView) rootView.findViewById(R.id.recipe_servings)).setText("Serves: " + String.valueOf(mRecipe.getServings()));
-
-            IngredientsListAdapter ingredientsListAdapter = new IngredientsListAdapter(getActivity(), mRecipe.getIngredients());
-            ((ListView) rootView.findViewById(R.id.ingredients_list)).setAdapter(ingredientsListAdapter);
-
-            rvStepsList = (RecyclerView) rootView.findViewById(R.id.steps_list);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-            rvStepsList.setLayoutManager(layoutManager);
-            rvStepsList.setHasFixedSize(true);
-            mAdapter = new StepsListAdapter(mRecipe.getSteps());
-            Log.d("STEPS", String.valueOf(mRecipe.getSteps().size()));
-            rvStepsList.setAdapter(mAdapter);
-
+        if (mRecipe == null) {
+            return rootView;
         }
+
+        //((TextView) rootView.findViewById(R.id.recipe_servings)).setText("Serves: " + String.valueOf(mRecipe.getServings()));
+
+        expListView = (ExpandableListView) rootView.findViewById(R.id.recipe_detail_list);
+
+        headerList = new ArrayList<String>();
+        headerList.add("Ingredients");
+        headerList.add("Directions");
+        mAdapter = new RecipeExpandableListAdapter(getActivity(), headerList, mRecipe.getIngredients(), mRecipe.getSteps());
+        expListView.setAdapter(mAdapter);
+        expListView.expandGroup(0);
+        expListView.expandGroup(1);
+
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+
+                // Only Directions should be clickable.  groupPosition of directions is 1.
+                if (groupPosition == 1) {
+                    Bundle arguments = new Bundle();
+                    arguments.putParcelable(RecipeDetailFragment.RECIPE, mRecipe);
+                    arguments.putInt(Recipe.STEP, childPosition);
+                    StepDetailFragment fragment = new StepDetailFragment();
+                    fragment.setArguments(arguments);
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.recipe_detail_container, fragment)
+                            .commit();
+                }
+                return false;
+            }
+        });
+
+
+
+
 
         return rootView;
     }

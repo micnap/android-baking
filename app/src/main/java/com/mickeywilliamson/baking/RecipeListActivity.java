@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -45,7 +46,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RecipeListActivity extends AppCompatActivity {
+public class RecipeListActivity extends AppCompatActivity implements StepDetailFragment.OnFragmentInteractionListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -55,7 +56,7 @@ public class RecipeListActivity extends AppCompatActivity {
     private ArrayList<Recipe> recipes;
     private SimpleItemRecyclerViewAdapter adapter;
 
-    private static final String TAG = StepsListAdapter.class.getSimpleName();
+    private static final String TAG = RecipeListActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,11 @@ public class RecipeListActivity extends AppCompatActivity {
                 Log.d("Error",t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        
     }
 
     public static class SimpleItemRecyclerViewAdapter

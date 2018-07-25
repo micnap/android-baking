@@ -1,6 +1,7 @@
 package com.mickeywilliamson.baking;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -14,7 +15,7 @@ import android.view.MenuItem;
  * item details are presented side-by-side with a list of items
  * in a {@link RecipeListActivity}.
  */
-public class RecipeDetailActivity extends AppCompatActivity {
+public class RecipeDetailActivity extends AppCompatActivity implements StepDetailFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,5 +67,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

@@ -14,6 +14,8 @@ public class Recipe implements Parcelable {
     public static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/";
     public static final String PATH = "topher/2017/May/59121517_baking/baking.json";
 
+    public static final String STEP = "step";
+
     private int id;
     private String name;
     private int servings;

@@ -6,4 +6,5 @@
     <color name="text">#2A5100</color>
     <color name="bg">#699A33</color>
     <color name="recipe_card_bg">#C2E39F</color>
+    <color name="light_grey">#ececec</color>
 </resources>
