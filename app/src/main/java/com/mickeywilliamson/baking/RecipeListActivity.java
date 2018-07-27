@@ -2,6 +2,7 @@ package com.mickeywilliamson.baking;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -62,7 +63,7 @@ public class RecipeListActivity extends AppCompatActivity {
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
             // activity should be in two-pane mode.
-            mTwoPane = true;
+            //mTwoPane = true;
         }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recipe_list);
@@ -71,10 +72,10 @@ public class RecipeListActivity extends AppCompatActivity {
         loadJSON(this, recyclerView);
 
         int spanCount = 2;
-        if (mTwoPane) {
-            spanCount = 1;
-        }
-        GridLayoutManager manager = new GridLayoutManager(this, spanCount);
+        //if (mTwoPane) {
+            //spanCount = 1;
+        //}
+        GridLayoutManager manager = new GridLayoutManager(this, calculateNumberOfColumns(2));
         recyclerView.setLayoutManager(manager);
 
     }
@@ -190,4 +191,66 @@ public class RecipeListActivity extends AppCompatActivity {
             }
         };
     }
+
+
+    //The following 3 methods derived from https://android--examples.blogspot.com/2017/03/android-recyclerview-in-different.html
+    // Custom method to calculate number of columns for grid type recycler view
+    protected int calculateNumberOfColumns(int base){
+        int columns = base;
+        String screenSize = getScreenSizeCategory();
+
+        if(screenSize.equals("small")){
+            if(base!=1){
+                columns = columns-1;
+            }
+        }else if (screenSize.equals("normal")){
+            // Do nothing
+        }else if(screenSize.equals("large")){
+            columns += 0;
+        }else if (screenSize.equals("xlarge")){
+            columns += 1;
+        }
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            columns = (int) (columns * 1.5);
+        }
+
+        return columns;
+    }
+
+    // Custom method to get screen current orientation
+    protected String getScreenOrientation(){
+        String orientation = "undefined";
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            orientation = "landscape";
+        }else if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            orientation = "portrait";
+        }
+
+        return orientation;
+    }
+
+    // Custom method to get screen size category
+    protected String getScreenSizeCategory(){
+        int screenLayout = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        switch(screenLayout){
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                // small screens are at least 426dp x 320dp
+                return "small";
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                // normal screens are at least 470dp x 320dp
+                return "normal";
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                // large screens are at least 640dp x 480dp
+                return "large";
+            case Configuration.SCREENLAYOUT_SIZE_XLARGE:
+                // xlarge screens are at least 960dp x 720dp
+                return "xlarge";
+            default:
+                return "undefined";
+        }
+    }
+
 }
