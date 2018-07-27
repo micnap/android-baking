@@ -2,15 +2,8 @@ package com.mickeywilliamson.baking;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,16 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mickeywilliamson.baking.Models.Recipe;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-import com.squareup.picasso.Transformation;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -46,7 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RecipeListActivity extends AppCompatActivity implements StepDetailFragment.OnFragmentInteractionListener {
+public class RecipeListActivity extends AppCompatActivity {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -119,11 +109,6 @@ public class RecipeListActivity extends AppCompatActivity implements StepDetailF
         });
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-        
-    }
-
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
@@ -189,7 +174,7 @@ public class RecipeListActivity extends AppCompatActivity implements StepDetailF
                 Recipe recipe = (Recipe) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putParcelable(RecipeDetailFragment.RECIPE, recipe);
+                    arguments.putParcelable(Recipe.RECIPE, recipe);
                     RecipeDetailFragment fragment = new RecipeDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -198,7 +183,7 @@ public class RecipeListActivity extends AppCompatActivity implements StepDetailF
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, RecipeDetailActivity.class);
-                    intent.putExtra(RecipeDetailFragment.RECIPE, recipe);
+                    intent.putExtra(Recipe.RECIPE, recipe);
 
                     context.startActivity(intent);
                 }

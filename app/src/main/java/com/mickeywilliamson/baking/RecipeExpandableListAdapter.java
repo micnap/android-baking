@@ -1,12 +1,14 @@
 package com.mickeywilliamson.baking;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+
+import com.mickeywilliamson.baking.Models.Ingredient;
+import com.mickeywilliamson.baking.Models.Step;
 
 import java.util.ArrayList;
 
@@ -34,12 +36,8 @@ public class RecipeExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
         if (groupPosition == 0) {
-            Log.d("WHICH GROUP", String.valueOf(groupPosition));
-            Log.d("SIZE", String.valueOf(mIngredients.size()));
             return mIngredients.size();
         } else {
-            Log.d("WHICH GROUP", String.valueOf(groupPosition));
-            Log.d("SIZE", String.valueOf(mSteps.size()));
             return mSteps.size();
         }
     }
@@ -95,9 +93,6 @@ public class RecipeExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastchild, View view, ViewGroup parent) {
 
         Object child = getChild(groupPosition, childPosition);
-
-        Log.d("GroupPosition", String.valueOf(groupPosition));
-        Log.d("childPosition", String.valueOf(childPosition));
 
         int layout = -1;
         Ingredient ingredient = null;

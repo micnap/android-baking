@@ -1,6 +1,6 @@
 package com.mickeywilliamson.baking;
 
-import java.util.ArrayList;
+import com.mickeywilliamson.baking.Models.Recipe;
 
 public class JSONResponse {
     private Recipe recipe;

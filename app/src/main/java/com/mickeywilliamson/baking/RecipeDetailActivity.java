@@ -3,11 +3,15 @@ package com.mickeywilliamson.baking;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+
+import com.mickeywilliamson.baking.Models.Recipe;
 
 /**
  * An activity representing a single Recipe detail screen. This
@@ -15,7 +19,9 @@ import android.view.MenuItem;
  * item details are presented side-by-side with a list of items
  * in a {@link RecipeListActivity}.
  */
-public class RecipeDetailActivity extends AppCompatActivity implements StepDetailFragment.OnFragmentInteractionListener {
+public class RecipeDetailActivity extends AppCompatActivity {
+
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +34,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        if (findViewById(R.id.recipe_detail_container) != null) {
+            Log.d("DETAILACTIVITY", "TWOSPAN IS TRUE");
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        } else {
+            Log.d("DETAILACTIVITY", "TWOSPAN IS FALSE");
         }
 
         // savedInstanceState is non-null when there is fragment state
@@ -43,20 +60,24 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putParcelable(RecipeDetailFragment.RECIPE,
-                    getIntent().getParcelableExtra(RecipeDetailFragment.RECIPE));
+            arguments.putParcelable(Recipe.RECIPE,
+                    getIntent().getParcelableExtra(Recipe.RECIPE));
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)
                     .commit();
         }
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        Log.d("JJJJJJJJJ", String.valueOf(id));
         if (id == android.R.id.home) {
+
             // This ID represents the Home or Up button. In the case of this
             // activity, the Up button is shown. For
             // more details, see the Navigation pattern on Android Design:
@@ -67,10 +88,5 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepDetai
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }

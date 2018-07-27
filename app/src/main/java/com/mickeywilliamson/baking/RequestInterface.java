@@ -1,5 +1,7 @@
 package com.mickeywilliamson.baking;
 
+import com.mickeywilliamson.baking.Models.Recipe;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
