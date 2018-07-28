@@ -3,12 +3,17 @@ package com.mickeywilliamson.baking.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Recipe Ingredients POJO.
+ */
 public class Ingredient implements Parcelable {
 
+    // Ingredient properties.
     private String quantity;
     private String measure;
     private String ingredient;
 
+    // Setters and getters.
     public Ingredient(String quantity, String measure, String ingredient) {
         this.quantity = quantity;
         this.measure = measure;
@@ -39,21 +44,7 @@ public class Ingredient implements Parcelable {
         this.ingredient = ingredient;
     }
 
-    static public String convertMeasurement(String m) {
-
-        if (m == null) {
-            return null;
-        }
-
-        switch (m) {
-            case "G":
-
-        }
-
-
-        return null;
-    }
-
+    // Methods to make Ingredient Parcelable.
     protected Ingredient(Parcel in) {
         quantity = in.readString();
         measure = in.readString();

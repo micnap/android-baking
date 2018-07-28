@@ -24,6 +24,7 @@ public class Recipe implements Parcelable {
     private ArrayList<Ingredient> ingredients;
     private ArrayList<Step> steps;
 
+    // Constructors.
     public Recipe() {}
 
     public Recipe(int id, String name, int servings, String image, ArrayList<Ingredient> ingredients, ArrayList<Step> steps) {
@@ -35,6 +36,7 @@ public class Recipe implements Parcelable {
         this.steps = steps;
     }
 
+    // Getters and Setters.
     public int getId() {
         return id;
     }
@@ -88,6 +90,7 @@ public class Recipe implements Parcelable {
         return name;
     }
 
+    // Methods to make Recipe parcelable.
     protected Recipe(Parcel in) {
         id = in.readInt();
         name = in.readString();
@@ -145,6 +148,7 @@ public class Recipe implements Parcelable {
         }
     };
 
+    // Since most of the recipes in the sample data don't have images, providing defaults here.
     public static int getPlaceholderImage(int id) {
 
         switch (id) {
@@ -153,11 +157,11 @@ public class Recipe implements Parcelable {
             case 2:
                 return R.drawable.brownie;
             case 3:
-                return R.drawable.nutella_pie;
+                return R.drawable.yellow_cake;
             case 4:
-                return R.drawable.nutella_pie;
+                return R.drawable.cheesecake;
             default:
-                return R.drawable.nutella_pie;
+                return R.drawable.default_recipe;
         }
     }
 }

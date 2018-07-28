@@ -14,13 +14,14 @@ import java.util.ArrayList;
 
 public class RecipeExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private static final String TAG = RecipeExpandableListAdapter.class.getSimpleName();
-
     Context mContext;
     ArrayList<String> mHeaders;
     ArrayList<Ingredient> mIngredients;
     ArrayList<Step> mSteps;
 
+    private static final String TAG = RecipeExpandableListAdapter.class.getSimpleName();
+
+    // Constructor.
     public RecipeExpandableListAdapter(Context context, ArrayList<String> headerList, ArrayList<Ingredient> ingredients, ArrayList<Step> steps) {
         mContext = context;
         mHeaders = headerList;
@@ -35,6 +36,9 @@ public class RecipeExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
+
+        // 0 == Ingredients.
+        // 1 == Directions.
         if (groupPosition == 0) {
             return mIngredients.size();
         } else {
@@ -49,11 +53,12 @@ public class RecipeExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
+
+        // 0 == Ingredients.
+        // 1 == Directions.
         if (groupPosition == 0) {
-            //Log.d("Ingredient", mIngredients.get(childPosition).getIngredient());
             return mIngredients.get(childPosition);
         } else {
-            //Log.d("Step", mSteps.get(childPosition - mIngredients.size()).getShortDescription());
             return mSteps.get(childPosition);
         }
     }
@@ -98,6 +103,9 @@ public class RecipeExpandableListAdapter extends BaseExpandableListAdapter {
         Ingredient ingredient = null;
         Step step = null;
 
+        // 0 == Ingredients.
+        // 1 == Directions.
+        // Sets the appropriate type of object.
         if (groupPosition == 0) {
             layout = R.layout.recipe_detail_child_ingredient;
             ingredient = (Ingredient) child;
@@ -106,34 +114,27 @@ public class RecipeExpandableListAdapter extends BaseExpandableListAdapter {
             step = (Step) child;
         }
 
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        view = inflater.inflate(layout, null);
 
 
-
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(layout, null);
-
-
+        // Set values of appropriate views based on whether we're dealing with an ingredient or
+        // direction.
         if  (groupPosition == 0) {
-
             TextView tvQuantity = (TextView) view.findViewById(R.id.ingredient_quantity);
             TextView tvMeasure = (TextView) view.findViewById(R.id.ingredient_measure);
             TextView tvIngredient = (TextView) view.findViewById(R.id.ingredient_name);
-
             tvQuantity.setText(ingredient.getQuantity());
             tvMeasure.setText(ingredient.getMeasure());
             tvIngredient.setText(ingredient.getIngredient());
-
         } else {
-
             TextView tvId = (TextView) view.findViewById(R.id.step_id);
             TextView tvShortDescription = (TextView) view.findViewById(R.id.step_short_description);
-
             tvId.setText(String.valueOf(step.getStepId()) + ". ");
             tvShortDescription.setText(step.getShortDescription());
-
         }
-        return view;
 
+        return view;
     }
 
     @Override

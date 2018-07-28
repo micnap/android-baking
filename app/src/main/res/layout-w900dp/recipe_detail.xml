@@ -10,7 +10,6 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context=".RecipeDetailFragment"
     android:background="@color/recipe_card_bg">
 
     <ExpandableListView

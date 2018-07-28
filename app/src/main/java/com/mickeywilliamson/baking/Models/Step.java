@@ -14,6 +14,7 @@ public class Step implements Parcelable {
     private String videoURL;
     private String thumbnailURL;
 
+    // Constructor.
     public Step(int id, String shortDescription, String description, String videoURL, String thumbnailURL) {
         this.stepId = stepId;
         this.shortDescription = shortDescription;
@@ -22,6 +23,7 @@ public class Step implements Parcelable {
         this.thumbnailURL = thumbnailURL;
     }
 
+    // Getters and settings.
     public int getStepId() {
         return stepId;
     }
@@ -62,6 +64,7 @@ public class Step implements Parcelable {
         this.thumbnailURL = thumbnailUrl;
     }
 
+    // Methods required for Parcelable.
     protected Step(Parcel in) {
         stepId = in.readInt();
         shortDescription = in.readString();

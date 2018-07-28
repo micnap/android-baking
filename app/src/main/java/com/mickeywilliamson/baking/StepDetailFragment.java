@@ -1,27 +1,19 @@
 package com.mickeywilliamson.baking;
 
-
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -38,11 +30,11 @@ import com.google.android.exoplayer2.util.Util;
 import com.mickeywilliamson.baking.Models.Recipe;
 import com.squareup.picasso.Picasso;
 
-
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link StepDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A fragment representing a single Item detail screen.
+ * This fragment is either contained in a {@link RecipeDetailActivity}
+ * in two-pane mode (on tablets) or a {@link StepDetailActivity}
+ * on phones.
  */
 public class StepDetailFragment extends Fragment {
 
@@ -59,20 +51,23 @@ public class StepDetailFragment extends Fragment {
     private SimpleExoPlayer mExoPlayer;
     private android.support.design.widget.CoordinatorLayout mActivityContainer;
 
+    private static final String TAG = StepDetailFragment.class.getSimpleName();
 
-    public StepDetailFragment() {
-        // Required empty public constructor
-    }
+    // Required empty public constructor
+    public StepDetailFragment() {}
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     *
+     * @param recipe
+     *          The Recipe object that contains all the recipe details including
+     *          all the steps.
+     * @param step
+     *          The id of the step (direction) that is to be displayed in this fragment.
      *
      * @return A new instance of fragment StepDetailFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static StepDetailFragment newInstance(Recipe recipe, int step) {
         StepDetailFragment fragment = new StepDetailFragment();
         Bundle args = new Bundle();
@@ -85,11 +80,11 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mRecipe = getArguments().getParcelable(Recipe.RECIPE);
             mStep = getArguments().getInt(Recipe.STEP);
         }
-
     }
 
     @Override
@@ -107,11 +102,8 @@ public class StepDetailFragment extends Fragment {
         tvShortDescription = view.findViewById(R.id.step_short_description);
         tvDescription = view.findViewById(R.id.step_description);
         mPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.exo_player);
-        //llStepDetailHolder = (LinearLayout) view.findViewById(R.id.ll_step_detail_holder);
         ivImage = (ImageView) view.findViewById(R.id.step_image);
-
         mActivityContainer = getActivity().findViewById(R.id.detail_parent_layout);
-
 
         btnPrevious = view.findViewById(R.id.btn_previous);
         if (mStep <= 0) {
@@ -125,7 +117,6 @@ public class StepDetailFragment extends Fragment {
         } else {
             btnNext.setOnClickListener(btnNextClickListener);
         }
-
 
         tvShortDescription.setText(mRecipe.getSteps().get(mStep).getShortDescription());
         tvDescription.setText(mRecipe.getSteps().get(mStep).getDescription());
@@ -147,8 +138,6 @@ public class StepDetailFragment extends Fragment {
             mPlayerView.setVisibility(View.GONE);
         }
 
-        Log.d("GRRRR", "STEP DETAIL FRAGMENT");
-
         return view;
     }
 
@@ -158,11 +147,13 @@ public class StepDetailFragment extends Fragment {
      */
     private void initializePlayer(Uri mediaUri) {
         if (mExoPlayer == null) {
+
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
+
             // Prepare the MediaSource.
             String userAgent = Util.getUserAgent(getActivity(), "ClassicalMusicQuiz");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
@@ -172,64 +163,20 @@ public class StepDetailFragment extends Fragment {
         }
     }
 
+    // Click listener for Previous button.
     private View.OnClickListener btnPreviousClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+
             if (mStep <= 0) {
                 return;
             }
-            mStep = mStep - 1;
-            tvShortDescription.setText(mRecipe.getSteps().get(mStep).getShortDescription());
-            tvDescription.setText(mRecipe.getSteps().get(mStep).getDescription());
 
-            getActivity().setTitle(mRecipe.getName() + ": " + mRecipe.getSteps().get(mStep).getShortDescription());
-
-            if (mStep <= 0) {
-                btnPrevious.setEnabled(false);
-            } else {
-                btnPrevious.setEnabled(true);
-                btnPrevious.setOnClickListener(btnPreviousClickListener);
-            }
-
-            if (mStep >= mRecipe.getSteps().size() - 1) {
-                btnNext.setEnabled(false);
-            } else {
-                btnNext.setEnabled(true);
-                btnNext.setOnClickListener(btnNextClickListener);
-            }
-
-            String imgUrl = mRecipe.getSteps().get(mStep).getThumbnailURL();
-            if (imgUrl !=null && !imgUrl.isEmpty()) {
-                ivImage.setVisibility(View.VISIBLE);
-                Picasso.get()
-                        .load(imgUrl)
-                        .placeholder(R.drawable.brownie)
-                        .error(R.drawable.brownie)
-                        .into(ivImage);
-            } else {
-                ivImage.setVisibility(View.GONE);
-            }
-
-            String videoUrl = mRecipe.getSteps().get(mStep).getVideoURL();
-            Log.d("VIDEOURL", videoUrl);
-            if (videoUrl != null && !videoUrl.isEmpty()) {
-                if (mPlayerView.getVisibility() == View.GONE) {
-                    mPlayerView.setVisibility(View.VISIBLE);
-                } else {
-                    releasePlayer();
-                }
-                initializePlayer(Uri.parse(videoUrl));
-            } else {
-                Log.d("VIDEOURL", videoUrl);
-                if (mPlayerView.getVisibility() != View.GONE) {
-                    releasePlayer();
-                }
-                mPlayerView.setVisibility(View.GONE);
-
-            }
+            adjustForClick(-1);
         }
     };
 
+    // Click listener for Next button.
     private View.OnClickListener btnNextClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -237,57 +184,76 @@ public class StepDetailFragment extends Fragment {
                 return;
             }
 
-            mStep = mStep + 1;
-            tvShortDescription.setText(mRecipe.getSteps().get(mStep).getShortDescription());
-            tvDescription.setText(mRecipe.getSteps().get(mStep).getDescription());
-
-            getActivity().setTitle(mRecipe.getName() + ": " + mRecipe.getSteps().get(mStep).getShortDescription());
-
-            if (mStep <= 0) {
-                btnPrevious.setEnabled(false);
-            } else {
-                btnPrevious.setEnabled(true);
-                btnPrevious.setOnClickListener(btnPreviousClickListener);
-            }
-
-            if (mStep >= mRecipe.getSteps().size() - 1) {
-                btnNext.setEnabled(false);
-            } else {
-                btnNext.setEnabled(true);
-                btnNext.setOnClickListener(btnNextClickListener);
-            }
-
-            String imgUrl = mRecipe.getSteps().get(mStep).getThumbnailURL();
-            if (imgUrl !=null && !imgUrl.isEmpty()) {
-                ivImage.setVisibility(View.VISIBLE);
-                Picasso.get()
-                        .load(imgUrl)
-                        .placeholder(R.drawable.brownie)
-                        .error(R.drawable.brownie)
-                        .into(ivImage);
-            } else {
-                ivImage.setVisibility(View.GONE);
-            }
-
-            String videoUrl = mRecipe.getSteps().get(mStep).getVideoURL();
-            if (videoUrl != null && !videoUrl.isEmpty()) {
-                if (mPlayerView.getVisibility() == View.GONE) {
-                    mPlayerView.setVisibility(View.VISIBLE);
-                } else {
-                    releasePlayer();
-                }
-                initializePlayer(Uri.parse(videoUrl));
-            } else {
-                Log.d("VIDEOURL", videoUrl);
-                if (mPlayerView.getVisibility() != View.GONE) {
-                    releasePlayer();
-                }
-
-                mPlayerView.setVisibility(View.GONE);
-
-            }
+            adjustForClick(1);
         }
     };
+
+    /**
+     * When the user clicks next or previous, the screen is updated to show the appropriate step.
+     * Previous clicks decrease step by one.
+     * Next clicks increase step by one.
+     * All views are then updated to reflect the new step.
+     *
+     * @param direction
+     *          1 indicates next, -1 indicated previous
+     */
+    private void adjustForClick(int direction) {
+
+        mStep = mStep + direction;
+        tvShortDescription.setText(mRecipe.getSteps().get(mStep).getShortDescription());
+        tvDescription.setText(mRecipe.getSteps().get(mStep).getDescription());
+
+        getActivity().setTitle(mRecipe.getName() + ": " + mRecipe.getSteps().get(mStep).getShortDescription());
+
+        // If we've reached the beginning of the steps, disable the previous button.
+        // If we've reached the end of the steps, disable the next button.
+        if (mStep <= 0) {
+            btnPrevious.setEnabled(false);
+        } else {
+            btnPrevious.setEnabled(true);
+            btnPrevious.setOnClickListener(btnPreviousClickListener);
+        }
+
+        if (mStep >= mRecipe.getSteps().size() - 1) {
+            btnNext.setEnabled(false);
+        } else {
+            btnNext.setEnabled(true);
+            btnNext.setOnClickListener(btnNextClickListener);
+        }
+
+        // If an image is provided in the data, load the image and display it. Otherwise, hide the view.
+        String imgUrl = mRecipe.getSteps().get(mStep).getThumbnailURL();
+        if (imgUrl !=null && !imgUrl.isEmpty()) {
+            ivImage.setVisibility(View.VISIBLE);
+            Picasso.get()
+                    .load(imgUrl)
+                    .placeholder(R.drawable.brownie)
+                    .error(R.drawable.brownie)
+                    .into(ivImage);
+        } else {
+            ivImage.setVisibility(View.GONE);
+        }
+
+        // If a video is provided in the data, load and display it.  Otherwise, hide the view.
+        String videoUrl = mRecipe.getSteps().get(mStep).getVideoURL();
+        if (videoUrl != null && !videoUrl.isEmpty()) {
+            if (mPlayerView.getVisibility() == View.GONE) {
+                mPlayerView.setVisibility(View.VISIBLE);
+            } else {
+                releasePlayer();
+            }
+            initializePlayer(Uri.parse(videoUrl));
+        } else {
+            Log.d("VIDEOURL", videoUrl);
+            if (mPlayerView.getVisibility() != View.GONE) {
+                releasePlayer();
+            }
+
+            mPlayerView.setVisibility(View.GONE);
+
+        }
+
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -300,7 +266,9 @@ public class StepDetailFragment extends Fragment {
         state.putInt(Recipe.STEP, mStep);
     }
 
-
+    /**
+     * Utilility function to stop and release the player.
+     */
     private void releasePlayer() {
         mExoPlayer.stop();
         mExoPlayer.release();
@@ -317,6 +285,9 @@ public class StepDetailFragment extends Fragment {
         }
 
     }
+
+    // Hides and restores views when the device is rotated into landscape mode
+    // and the video player goes full screen.
     // Derived from https://medium.com/fungjai/playing-video-by-exoplayer-b97903be0b33
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -326,77 +297,39 @@ public class StepDetailFragment extends Fragment {
             return;
         }
         int currentOrientation = getResources().getConfiguration().orientation;
+
+        // Hide all views but the video player.
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             tvShortDescription.setVisibility(View.GONE);
             tvDescription.setVisibility((View.GONE));
             btnPrevious.setVisibility(View.GONE);
             btnNext.setVisibility(View.GONE);
             mActivityContainer.setFitsSystemWindows(false);
-            //LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mPlayerView.getLayoutParams();
-            //params.width=params.MATCH_PARENT;
-            //params.height=params.MATCH_PARENT;
-            //mPlayerView.setLayoutParams(params);
+
             if(((AppCompatActivity) getActivity()).getSupportActionBar()!=null) {
                 ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
             }
 
-            //llStepDetailHolder.setPadding(0,0,0,0);
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
+        // Restore the views and config.
         } else {
-            //unhide your objects here.
             tvShortDescription.setVisibility(View.VISIBLE);
             tvDescription.setVisibility((View.VISIBLE));
             btnPrevious.setVisibility(View.VISIBLE);
             btnNext.setVisibility(View.VISIBLE);
             mActivityContainer.setFitsSystemWindows(true);
-            //LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mPlayerView.getLayoutParams();
-            //params.width=params.MATCH_PARENT;
-            //params.height=600;
-            //mPlayerView.setLayoutParams(params);
+
             if(((AppCompatActivity) getActivity()).getSupportActionBar()!=null) {
                 ((AppCompatActivity) getActivity()).getSupportActionBar().show();
             }
-            // Restore padding to the LinearLayout
-            // https://stackoverflow.com/questions/4275797/view-setpadding-accepts-only-in-px-is-there-anyway-to-setpadding-in-dp
-            //int padding_in_dp = 30;  // 6 dps
-            //final float scale = getResources().getDisplayMetrics().density;
-            //int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
-            //llStepDetailHolder.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
 
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
-    }
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        Log.d("HHHHHHHHH", String.valueOf(id));
-        if (id == android.R.id.home) {
-
-
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-
-            //Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
-            //intent.putExtra(Recipe.RECIPE, mRecipe);
-            //getActivity().navigateUpTo(intent);
-            //getFragmentManager().popBackStack();
-            //getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-            return true;
-        //
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
