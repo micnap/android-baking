@@ -1,4 +1,4 @@
-package com.mickeywilliamson.baking;
+package com.mickeywilliamson.baking.fragments;
 
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -27,7 +27,10 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.mickeywilliamson.baking.Models.Recipe;
+import com.mickeywilliamson.baking.R;
+import com.mickeywilliamson.baking.activities.RecipeDetailActivity;
+import com.mickeywilliamson.baking.activities.StepDetailActivity;
+import com.mickeywilliamson.baking.models.Recipe;
 import com.squareup.picasso.Picasso;
 
 /**

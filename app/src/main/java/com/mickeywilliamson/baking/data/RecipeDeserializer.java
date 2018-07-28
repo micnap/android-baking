@@ -1,13 +1,13 @@
-package com.mickeywilliamson.baking;
+package com.mickeywilliamson.baking.data;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mickeywilliamson.baking.Models.Ingredient;
-import com.mickeywilliamson.baking.Models.Recipe;
-import com.mickeywilliamson.baking.Models.Step;
+import com.mickeywilliamson.baking.models.Ingredient;
+import com.mickeywilliamson.baking.models.Recipe;
+import com.mickeywilliamson.baking.models.Step;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

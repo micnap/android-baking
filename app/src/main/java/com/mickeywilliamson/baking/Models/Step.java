@@ -1,4 +1,4 @@
-package com.mickeywilliamson.baking.Models;
+package com.mickeywilliamson.baking.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

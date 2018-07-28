@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".RecipeListActivity"
+            android:name=".activities.RecipeListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,21 +22,38 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RecipeDetailActivity"
+            android:name=".activities.RecipeDetailActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:label="@string/title_recipe_detail"
-            android:parentActivityName=".RecipeListActivity"
+            android:parentActivityName=".activities.RecipeListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mickeywilliamson.baking.RecipeListActivity"/>
+                android:value="com.mickeywilliamson.baking.activities.RecipeListActivity"/>
         </activity>
-        <activity android:name=".StepDetailActivity"
-                  android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-                  android:parentActivityName=".RecipeDetailActivity">
+        <activity
+            android:name=".activities.StepDetailActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:parentActivityName=".activities.RecipeDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mickeywilliamson.baking.RecipeDetailActivity"/>
+                android:value="com.mickeywilliamson.baking.activities.RecipeDetailActivity"/>
+        </activity>
+
+        <receiver android:name=".RecipeWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_widget_info"/>
+        </receiver>
+
+        <activity android:name=".RecipeWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
         </activity>
     </application>
 

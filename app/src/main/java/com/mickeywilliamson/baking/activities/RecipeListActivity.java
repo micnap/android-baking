@@ -1,9 +1,8 @@
-package com.mickeywilliamson.baking;
+package com.mickeywilliamson.baking.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,7 +17,10 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mickeywilliamson.baking.Models.Recipe;
+import com.mickeywilliamson.baking.R;
+import com.mickeywilliamson.baking.data.RequestInterface;
+import com.mickeywilliamson.baking.data.RecipeDeserializer;
+import com.mickeywilliamson.baking.models.Recipe;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

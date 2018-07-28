@@ -1,4 +1,4 @@
-package com.mickeywilliamson.baking;
+package com.mickeywilliamson.baking.activities;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -7,7 +7,9 @@ import android.os.Bundle;
 
 import android.view.MenuItem;
 
-import com.mickeywilliamson.baking.Models.Recipe;
+import com.mickeywilliamson.baking.R;
+import com.mickeywilliamson.baking.fragments.StepDetailFragment;
+import com.mickeywilliamson.baking.models.Recipe;
 
 /**
  * An activity representing a single Direction detail screen. This

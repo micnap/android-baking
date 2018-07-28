@@ -1,20 +1,20 @@
-package com.mickeywilliamson.baking;
+package com.mickeywilliamson.baking.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
 
-import com.mickeywilliamson.baking.Models.Recipe;
+import com.mickeywilliamson.baking.R;
+import com.mickeywilliamson.baking.adapters.RecipeExpandableListAdapter;
+import com.mickeywilliamson.baking.fragments.StepDetailFragment;
+import com.mickeywilliamson.baking.models.Recipe;
 
 import java.util.ArrayList;
 

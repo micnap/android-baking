@@ -1,4 +1,4 @@
-package com.mickeywilliamson.baking;
+package com.mickeywilliamson.baking.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import com.mickeywilliamson.baking.Models.Ingredient;
-import com.mickeywilliamson.baking.Models.Step;
+import com.mickeywilliamson.baking.R;
+import com.mickeywilliamson.baking.models.Ingredient;
+import com.mickeywilliamson.baking.models.Step;
 
 import java.util.ArrayList;
 

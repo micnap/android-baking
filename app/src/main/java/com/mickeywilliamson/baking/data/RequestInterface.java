@@ -1,6 +1,6 @@
-package com.mickeywilliamson.baking;
+package com.mickeywilliamson.baking.data;
 
-import com.mickeywilliamson.baking.Models.Recipe;
+import com.mickeywilliamson.baking.models.Recipe;
 
 import java.util.ArrayList;
 
