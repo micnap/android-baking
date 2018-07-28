@@ -173,7 +173,7 @@ public class RecipeListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Recipe recipe = (Recipe) view.getTag();
-                if (mTwoPane) {
+                /*if (mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putParcelable(Recipe.RECIPE, recipe);
                     RecipeDetailFragment fragment = new RecipeDetailFragment();
@@ -187,7 +187,12 @@ public class RecipeListActivity extends AppCompatActivity {
                     intent.putExtra(Recipe.RECIPE, recipe);
 
                     context.startActivity(intent);
-                }
+                }*/
+                Context context = view.getContext();
+                Intent intent = new Intent(context, RecipeDetailActivity.class);
+                intent.putExtra(Recipe.RECIPE, recipe);
+
+                context.startActivity(intent);
             }
         };
     }

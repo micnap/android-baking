@@ -9,11 +9,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -87,8 +90,6 @@ public class StepDetailFragment extends Fragment {
             mStep = getArguments().getInt(Recipe.STEP);
         }
 
-        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override
@@ -99,17 +100,18 @@ public class StepDetailFragment extends Fragment {
             mStep = savedInstanceState.getInt(Recipe.STEP);
         }
 
-
+        getActivity().setTitle(mRecipe.getName() + ": " + mRecipe.getSteps().get(mStep).getDescription());
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step_detail, container, false);
         tvShortDescription = view.findViewById(R.id.step_short_description);
         tvDescription = view.findViewById(R.id.step_description);
         mPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.exo_player);
-        llStepDetailHolder = (LinearLayout) view.findViewById(R.id.ll_step_detail_holder);
+        //llStepDetailHolder = (LinearLayout) view.findViewById(R.id.ll_step_detail_holder);
         ivImage = (ImageView) view.findViewById(R.id.step_image);
 
         mActivityContainer = getActivity().findViewById(R.id.detail_parent_layout);
+
 
         btnPrevious = view.findViewById(R.id.btn_previous);
         if (mStep <= 0) {
@@ -180,6 +182,7 @@ public class StepDetailFragment extends Fragment {
             tvShortDescription.setText(mRecipe.getSteps().get(mStep).getShortDescription());
             tvDescription.setText(mRecipe.getSteps().get(mStep).getDescription());
 
+            getActivity().setTitle(mRecipe.getName() + ": " + mRecipe.getSteps().get(mStep).getShortDescription());
 
             if (mStep <= 0) {
                 btnPrevious.setEnabled(false);
@@ -237,6 +240,8 @@ public class StepDetailFragment extends Fragment {
             mStep = mStep + 1;
             tvShortDescription.setText(mRecipe.getSteps().get(mStep).getShortDescription());
             tvDescription.setText(mRecipe.getSteps().get(mStep).getDescription());
+
+            getActivity().setTitle(mRecipe.getName() + ": " + mRecipe.getSteps().get(mStep).getShortDescription());
 
             if (mStep <= 0) {
                 btnPrevious.setEnabled(false);
@@ -317,6 +322,9 @@ public class StepDetailFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
+        if (mPlayerView.getVisibility() == View.GONE) {
+            return;
+        }
         int currentOrientation = getResources().getConfiguration().orientation;
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             tvShortDescription.setVisibility(View.GONE);
@@ -324,14 +332,15 @@ public class StepDetailFragment extends Fragment {
             btnPrevious.setVisibility(View.GONE);
             btnNext.setVisibility(View.GONE);
             mActivityContainer.setFitsSystemWindows(false);
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mPlayerView.getLayoutParams();
-            params.width=params.MATCH_PARENT;
-            params.height=params.MATCH_PARENT;
-            mPlayerView.setLayoutParams(params);
+            //LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mPlayerView.getLayoutParams();
+            //params.width=params.MATCH_PARENT;
+            //params.height=params.MATCH_PARENT;
+            //mPlayerView.setLayoutParams(params);
             if(((AppCompatActivity) getActivity()).getSupportActionBar()!=null) {
                 ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
             }
-            llStepDetailHolder.setPadding(0,0,0,0);
+
+            //llStepDetailHolder.setPadding(0,0,0,0);
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -345,20 +354,19 @@ public class StepDetailFragment extends Fragment {
             btnPrevious.setVisibility(View.VISIBLE);
             btnNext.setVisibility(View.VISIBLE);
             mActivityContainer.setFitsSystemWindows(true);
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mPlayerView.getLayoutParams();
-            params.width=params.MATCH_PARENT;
-            params.height=600;
-            mPlayerView.setLayoutParams(params);
+            //LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mPlayerView.getLayoutParams();
+            //params.width=params.MATCH_PARENT;
+            //params.height=600;
+            //mPlayerView.setLayoutParams(params);
             if(((AppCompatActivity) getActivity()).getSupportActionBar()!=null) {
                 ((AppCompatActivity) getActivity()).getSupportActionBar().show();
             }
-
             // Restore padding to the LinearLayout
             // https://stackoverflow.com/questions/4275797/view-setpadding-accepts-only-in-px-is-there-anyway-to-setpadding-in-dp
-            int padding_in_dp = 30;  // 6 dps
-            final float scale = getResources().getDisplayMetrics().density;
-            int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
-            llStepDetailHolder.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
+            //int padding_in_dp = 30;  // 6 dps
+            //final float scale = getResources().getDisplayMetrics().density;
+            //int padding_in_px = (int) (padding_in_dp * scale + 0.5f);
+            //llStepDetailHolder.setPadding(padding_in_px, padding_in_px, padding_in_px, padding_in_px);
 
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
@@ -384,7 +392,7 @@ public class StepDetailFragment extends Fragment {
             //Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
             //intent.putExtra(Recipe.RECIPE, mRecipe);
             //getActivity().navigateUpTo(intent);
-            getFragmentManager().popBackStack();
+            //getFragmentManager().popBackStack();
             //getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
             return true;
         //
