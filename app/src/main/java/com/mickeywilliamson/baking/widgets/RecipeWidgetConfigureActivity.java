@@ -1,4 +1,4 @@
-package com.mickeywilliamson.baking;
+package com.mickeywilliamson.baking.widgets;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -6,18 +6,54 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-/**
- * The configuration screen for the {@link RecipeWidget RecipeWidget} AppWidget.
- */
-public class RecipeWidgetConfigureActivity extends Activity {
+import com.mickeywilliamson.baking.R;
 
-    private static final String PREFS_NAME = "com.mickeywilliamson.baking.RecipeWidget";
+/**
+ * The configuration screen for the {@link RecipeWidgetProvider RecipeWidgetProvider} AppWidget.
+ */
+public class RecipeWidgetConfigureActivity extends Activity implements View.OnClickListener {
+
+    private static final String PREFS_NAME = "com.mickeywilliamson.baking.widgets.RecipeWidgetProvider";
     private static final String PREF_PREFIX_KEY = "appwidget_";
+
+
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    EditText mAppWidgetText;
+    //EditText mAppWidgetText;
+
+    @Override
+    public void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+
+        // Set the result to CANCELED.  This will cause the widget host to cancel
+        // out of the widget placement if the user presses the back button.
+        setResult(RESULT_CANCELED);
+
+        setContentView(R.layout.recipe_widget_configure);
+        //mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
+        findViewById(R.id.add_button).setOnClickListener(this);
+
+        // Find the widget id from the intent.
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            mAppWidgetId = extras.getInt(
+                    AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        }
+
+        // If this activity was started with an intent without an app widget ID, finish with an error.
+        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+            finish();
+            return;
+        }
+
+        //mAppWidgetText.setText(loadTitlePref(RecipeWidgetConfigureActivity.this, mAppWidgetId));
+    }
+
+/*
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             final Context context = RecipeWidgetConfigureActivity.this;
@@ -28,15 +64,35 @@ public class RecipeWidgetConfigureActivity extends Activity {
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            RecipeWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
+
+            RecipeWidgetProvider.updateAppWidget(context, appWidgetManager, mAppWidgetId);
 
             // Make sure we pass back the original appWidgetId
             Intent resultValue = new Intent();
             resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
             setResult(RESULT_OK, resultValue);
             finish();
+
         }
-    };
+    };*/
+
+    public void onClick(View v) {
+        if (v.getId() == R.id.add_button) {
+            startWidget();
+        }
+    }
+
+    private void startWidget() {
+        Intent intent = new Intent();
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+        setResult(RESULT_OK, intent);
+
+        Intent serviceIntent = new Intent(this, RemoteFetchService.class);
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+        startService(serviceIntent);
+        this.finish();
+    }
+
 
     public RecipeWidgetConfigureActivity() {
         super();
@@ -67,33 +123,6 @@ public class RecipeWidgetConfigureActivity extends Activity {
         prefs.apply();
     }
 
-    @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
 
-        // Set the result to CANCELED.  This will cause the widget host to cancel
-        // out of the widget placement if the user presses the back button.
-        setResult(RESULT_CANCELED);
-
-        setContentView(R.layout.recipe_widget_configure);
-        mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
-        findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
-
-        // Find the widget id from the intent.
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            mAppWidgetId = extras.getInt(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        }
-
-        // If this activity was started with an intent without an app widget ID, finish with an error.
-        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            finish();
-            return;
-        }
-
-        mAppWidgetText.setText(loadTitlePref(RecipeWidgetConfigureActivity.this, mAppWidgetId));
-    }
 }
 

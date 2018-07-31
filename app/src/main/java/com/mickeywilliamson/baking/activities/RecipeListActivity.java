@@ -75,10 +75,6 @@ public class RecipeListActivity extends AppCompatActivity {
      */
     private void loadJSON(final RecipeListActivity parent, final RecyclerView recyclerView) {
 
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Recipe.class, new RecipeDeserializer())
-                .create();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Recipe.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
