@@ -40,29 +40,6 @@
                 android:value="com.mickeywilliamson.baking.activities.RecipeDetailActivity"/>
         </activity>
 
-        <receiver android:name=".widgets.RecipeWidgetProvider">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="com.mickeywilliamson.baking.widgets.DATA_FETCHED" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/recipe_widget_info"/>
-        </receiver>
-
-        <activity android:name=".widgets.RecipeWidgetConfigureActivity">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
-            </intent-filter>
-        </activity>
-
-        <service android:name=".widgets.RemoteFetchService"></service>
-        <service android:name=".widgets.WebFetchIntentService"></service>
-        <service
-            android:name=".widgets.WidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
-
     </application>
 
 
