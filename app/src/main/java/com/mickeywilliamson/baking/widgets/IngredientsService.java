@@ -4,11 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.widget.RemoteViewsService;
 
-import com.mickeywilliamson.baking.models.Ingredient;
-
 public class IngredientsService extends RemoteViewsService {
-
-
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {

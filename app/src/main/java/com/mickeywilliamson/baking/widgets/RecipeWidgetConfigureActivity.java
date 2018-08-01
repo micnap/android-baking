@@ -54,13 +54,6 @@ public class RecipeWidgetConfigureActivity extends Activity {
         public void onClick(View v) {
             final Context context = RecipeWidgetConfigureActivity.this;
 
-            // When the button is clicked, store the string locally
-            //String widgetText = mAppWidgetText.getText().toString();
-
-            //saveTitlePref(context, mAppWidgetId, widgetText);
-
-            //saveIngredientsPref(parent.getContext(), mAppWidgetId, ingredients);
-
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             RecipeWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
@@ -88,7 +81,6 @@ public class RecipeWidgetConfigureActivity extends Activity {
 
         setContentView(R.layout.recipe_widget_configure);
 
-        mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
         mRecipeChoices = (Spinner) findViewById(R.id.spinner_recipe_choices);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 
@@ -100,24 +92,12 @@ public class RecipeWidgetConfigureActivity extends Activity {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
                 Recipe chosenRecipe = RecipeSpinnerAdapter.sRecipes.get(pos);
-
-                String recipeTitle = chosenRecipe.getName();
-                saveTitlePref(parent.getContext(), mAppWidgetId, recipeTitle);
-
-
-                ingredients = chosenRecipe.getIngredients();
-                saveIngredientsPref(parent.getContext(), mAppWidgetId, ingredients);
-
                 saveRecipePref(parent.getContext(), mAppWidgetId, chosenRecipe);
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-
-
-
 
         // Find the widget id from the intent.
         Intent intent = getIntent();
@@ -132,33 +112,6 @@ public class RecipeWidgetConfigureActivity extends Activity {
             finish();
             return;
         }
-
-        mAppWidgetText.setText(loadTitlePref(RecipeWidgetConfigureActivity.this, mAppWidgetId));
-    }
-
-    // Write the prefix to the SharedPreferences object for this widget
-    static void saveIngredientsPref(Context context, int appWidgetId, ArrayList<Ingredient> ingredients) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        String strIngredients = ingredients == null ? null : new Gson().toJson(ingredients);
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_INGREDIENTS, strIngredients);
-        prefs.apply();
-    }
-
-    static ArrayList<Ingredient> loadIngredientsPref(Context context, int appWidgetId) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String ingredientsJson = prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_INGREDIENTS, null);
-        if (ingredientsJson != null) {
-            //https://stackoverflow.com/questions/14981233/android-arraylist-of-custom-objects-save-to-sharedpreferences-serializable/40237149
-            Type type = new TypeToken<List<Ingredient>>(){}.getType();
-            return new Gson().fromJson(ingredientsJson, type);
-        }
-        return null;
-    }
-
-    static void deleteIngredientsPref(Context context, int appWidgetId) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.remove(PREF_PREFIX_KEY + appWidgetId + PREF_INGREDIENTS);
-        prefs.apply();
     }
 
     static void saveRecipePref(Context context, int appWidgetId, Recipe recipe) {
@@ -178,31 +131,6 @@ public class RecipeWidgetConfigureActivity extends Activity {
     static void deleteRecipePref(Context context, int appWidgetId) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.remove(PREF_PREFIX_KEY + appWidgetId + PREF_RECIPE);
-        prefs.apply();
-    }
-
-    // Write the prefix to the SharedPreferences object for this widget
-    static void saveTitlePref(Context context, int appWidgetId, String text) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId, text);
-        prefs.apply();
-    }
-
-    // Read the prefix from the SharedPreferences object for this widget.
-    // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
-        if (titleValue != null) {
-            return titleValue;
-        } else {
-            return context.getString(R.string.appwidget_text);
-        }
-    }
-
-    static void deleteTitlePref(Context context, int appWidgetId) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.remove(PREF_PREFIX_KEY + appWidgetId);
         prefs.apply();
     }
 

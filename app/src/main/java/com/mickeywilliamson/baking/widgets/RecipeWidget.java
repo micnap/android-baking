@@ -25,29 +25,24 @@ public class RecipeWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
-        CharSequence widgetText = RecipeWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
-        ArrayList<Ingredient> ingredients = RecipeWidgetConfigureActivity.loadIngredientsPref(context, appWidgetId);
-
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
-        views.setTextViewText(R.id.recipe_widget_title, widgetText);
-
 
         Intent intent = new Intent(context, IngredientsService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-
-        // No idea what this line does but every tutorial I went throught "listview in app widgets" had it.
-        //intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
         views.setRemoteAdapter(R.id.ingredients_listview, intent);
         views.setEmptyView(R.id.ingredients_listview, R.id.empty_text);
 
         Recipe recipe = RecipeWidgetConfigureActivity.loadRecipePref(context, appWidgetId);
-        Intent openAppIntent;
+        views.setTextViewText(R.id.recipe_widget_title, recipe.getName());
 
+        Intent openAppIntent;
+        // Open RecipeListActivity if recipe happens to be empty.
         if (recipe == null) {
             openAppIntent = new Intent(context, RecipeListActivity.class);
-        } else { // Set on click to open the corresponding detail activity
+        // Otherwise, open the specific recipe in its RecipeDetailActivity.
+        } else {
             openAppIntent = new Intent(context, RecipeDetailActivity.class);
             openAppIntent.putExtra(Recipe.RECIPE, recipe);
         }
@@ -71,8 +66,6 @@ public class RecipeWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         // When the user deletes the widget, delete the preference associated with it.
         for (int appWidgetId : appWidgetIds) {
-            RecipeWidgetConfigureActivity.deleteTitlePref(context, appWidgetId);
-            RecipeWidgetConfigureActivity.deleteIngredientsPref(context, appWidgetId);
             RecipeWidgetConfigureActivity.deleteRecipePref(context, appWidgetId);
         }
     }

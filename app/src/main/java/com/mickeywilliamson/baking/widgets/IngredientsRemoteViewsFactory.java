@@ -28,9 +28,8 @@ public class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteV
     public IngredientsRemoteViewsFactory(Context context, Intent intent) {
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         mRecipe = RecipeWidgetConfigureActivity.loadRecipePref(context, appWidgetId);
-        mIngredients = RecipeWidgetConfigureActivity.loadIngredientsPref(context, appWidgetId);
+        mIngredients = mRecipe.getIngredients();
         mContext = context;
-        Log.d("GOT HERE", "GOT HERE");
     }
 
     @Override
@@ -40,12 +39,17 @@ public class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteV
 
     @Override
     public RemoteViews getViewAt(int i) {
+
+        // Sets the values for the ingredient rows in the widget.
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.recipe_widget_ingredient_row);
         Ingredient ingredient = mIngredients.get(i);
         remoteViews.setTextViewText(R.id.quantity, ingredient.getQuantity());
         remoteViews.setTextViewText(R.id.measure, ingredient.getMeasure());
         remoteViews.setTextViewText(R.id.ingredient, ingredient.getIngredient());
 
+        // Converting the Recipe object to JSON for passing to the activity.
+        // This sidesteps a bug in Android that prevents objects from being passed from
+        // app widgets to activities.
         Bundle extras = new Bundle();
         extras.putString(Recipe.RECIPE, Recipe.convertToJsonString(mRecipe));
         Intent fillInIntent = new Intent();
