@@ -3,9 +3,13 @@ package com.mickeywilliamson.baking.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mickeywilliamson.baking.R;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Recipe implements Parcelable {
 
@@ -14,8 +18,10 @@ public class Recipe implements Parcelable {
     public static final String BASE_URL = "http://micnap.com/";
     public static final String PATH = "recipes.json";
 
-    public static final String RECIPE = "recipe";
+    public static final String RECIPE = "com.mickeywilliamson.baking.models.RECIPE";
     public static final String STEP = "step";
+
+    public static final int INVALID_RECIPE_ID = -1;
 
     private int id;
     private String name;
@@ -163,5 +169,20 @@ public class Recipe implements Parcelable {
             default:
                 return R.drawable.default_recipe;
         }
+    }
+
+    public static <T> T convertFromJsonString(String jsonString){
+        if (jsonString == null) {
+            return null;
+        }
+        Type type = new TypeToken<Recipe>(){}.getType();
+        return new Gson().fromJson(jsonString,type);
+    }
+
+    public static String convertToJsonString(Object object){
+        if (object == null) {
+            return null;
+        }
+        return new Gson().toJson(object);
     }
 }
