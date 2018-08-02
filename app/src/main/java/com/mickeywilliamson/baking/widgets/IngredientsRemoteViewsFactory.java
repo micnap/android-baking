@@ -27,7 +27,9 @@ public class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteV
     public IngredientsRemoteViewsFactory(Context context, Intent intent) {
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         mRecipe = RecipeWidgetConfigureActivity.loadRecipePref(context, appWidgetId);
-        mIngredients = mRecipe.getIngredients();
+        if (mRecipe != null) {
+            mIngredients = mRecipe.getIngredients();
+        }
         mContext = context;
     }
 
