@@ -1,9 +1,9 @@
 This Android app fills the requirements for the fourth project of the Udacity's Android Developer Nanodegree.
 
-#Overview:
+# Overview:
 It retrieves a list of recipes from the web and displays them in cardview.  Clicking on a recipe card takes the user to a detail view of the recipe which includes a list of ingredients and a list of steps.  When the user clicks on a step, the step's details (video, image, and text) are display in a new screen on a phone or to the right of the ingredients/steps list on a tablet in landscape.  Buttons are provided for easy navigation back and forth between the steps.  The step video displays full screen in landscape mode. 
 
-#Topics learned
+# Topics learned
 Topics learned through the project include:
 * Image optimization
 * Use of RecyclerView and ExpandableListView
