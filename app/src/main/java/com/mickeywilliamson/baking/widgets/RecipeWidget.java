@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.widget.RemoteViews;
 
 import com.mickeywilliamson.baking.R;
@@ -29,6 +30,11 @@ public class RecipeWidget extends AppWidgetProvider {
 
         Intent intent = new Intent(context, IngredientsService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        // This is needed to create more than one instance of the app.  Without it,
+        // all instances get the same ingredients as the first instance.
+        // I don't understand why at the moment.
+        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+
         views.setRemoteAdapter(R.id.ingredients_listview, intent);
         views.setEmptyView(R.id.ingredients_listview, R.id.empty_text);
 
