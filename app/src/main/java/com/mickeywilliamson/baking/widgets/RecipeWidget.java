@@ -58,6 +58,7 @@ public class RecipeWidget extends AppWidgetProvider {
         // RecipeDetailScreen with the recipe loaded.
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.recipe_widget_title, pendingIntent);
+        views.setOnClickPendingIntent(R.id.logo, pendingIntent);
 
         // Set a pendingIntentTemplate for the items in the listview that display the list
         // of ingredients.  (More performant)
