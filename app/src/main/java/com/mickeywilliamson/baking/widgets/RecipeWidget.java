@@ -5,14 +5,11 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.mickeywilliamson.baking.R;
 import com.mickeywilliamson.baking.activities.RecipeDetailActivity;
 import com.mickeywilliamson.baking.activities.RecipeListActivity;
-import com.mickeywilliamson.baking.models.Ingredient;
 import com.mickeywilliamson.baking.models.Recipe;
 
 import java.util.ArrayList;
