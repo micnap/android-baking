@@ -43,6 +43,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".activities.RecipeListActivity"
         tools:listitem="@layout/recipe_list_row"/>
 
