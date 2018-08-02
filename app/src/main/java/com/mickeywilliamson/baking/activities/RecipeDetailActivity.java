@@ -51,33 +51,24 @@ public class RecipeDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        // Get the recipe from the RecipeListActivity's intent.
-        // If that's empty, then there was a config change (rotation) and we restore
-        // the recipe from the savedInstanceState.
-        //mRecipe = getIntent().getParcelableExtra(Recipe.RECIPE);
-
-        //Log.d("TEST", "TESTTESTTESTTEST");
-        //Log.d("TESTTEST", mRecipe.getName());
-
-        //mRecipe = Recipe.convertFromJsonString(getIntent().getStringExtra(Recipe.RECIPE));
-        //mRecipe = getIntent().getParcelableExtra(Recipe.RECIPE);
+        // If a config change was made, restore the recipe from the savedInstanceState
         if (savedInstanceState != null) {
             if (mRecipe == null) {
                 mRecipe = savedInstanceState.getParcelable(Recipe.RECIPE);
             }
             // Restore the scrolling position of the ExpandableListView.
             mListInstanceState = savedInstanceState.getParcelable(LIST_INSTANCE_STATE);
+        // If the click to get here came from the RecipeDetailList, get the recipe
+        // from the intent.
         } else if (getIntent().getParcelableExtra(Recipe.RECIPE) != null) {
             mRecipe = getIntent().getParcelableExtra(Recipe.RECIPE);
+        // If the click to get here came from the app widget, the recipe will be
+        // in JSON form and needs to be converted to a Recipe object.  The object
+        // couldn't be added as a Parcelable because of a bug in sending parcelables from
+        // intents to activities.
         } else if (getIntent().getStringExtra(Recipe.RECIPE) != null) {
             mRecipe = Recipe.convertFromJsonString(getIntent().getStringExtra(Recipe.RECIPE));
-
-            // If the user clicked on the app widget, the recipe will be here.
-        } //else if (getIntent().getExtras() != null) {
-        //    Bundle bundle = getIntent().getExtras();
-         //   mRecipe = bundle.getParcelable(EXTRA_RECIPE);
-         //   Log.d("TEST", "TESTTESTTESTTEST");
-        //}
+        }
 
         setTitle(mRecipe.getName());
 
