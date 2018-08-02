@@ -39,7 +39,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RecipeListActivity extends AppCompatActivity {
 
-    private ArrayList<Recipe> recipes;
     private SimpleItemRecyclerViewAdapter adapter;
 
     private static final String TAG = RecipeListActivity.class.getSimpleName();
@@ -54,9 +53,10 @@ public class RecipeListActivity extends AppCompatActivity {
         toolbar.setTitle(getTitle());
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recipe_list);
+        TextView tvEmpty = (TextView) findViewById(R.id.empty_text);
         assert recyclerView != null;
 
-        loadJSON(this, recyclerView);
+        loadJSON(this, recyclerView, tvEmpty);
 
         // Uses a grid to display the recipes.
         GridLayoutManager manager = new GridLayoutManager(this, calculateNumberOfColumns(2));
@@ -73,7 +73,7 @@ public class RecipeListActivity extends AppCompatActivity {
      * @param recyclerView
      *      The recyclerView
      */
-    private void loadJSON(final RecipeListActivity parent, final RecyclerView recyclerView) {
+    private void loadJSON(final RecipeListActivity parent, final RecyclerView recyclerView, final TextView tvEmpty) {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Recipe.BASE_URL)
@@ -88,8 +88,12 @@ public class RecipeListActivity extends AppCompatActivity {
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
 
                 ArrayList<Recipe> recipes = response.body();
-                adapter = new SimpleItemRecyclerViewAdapter(parent, recipes);
-                recyclerView.setAdapter(adapter);
+                if (recipes != null) {
+                    adapter = new SimpleItemRecyclerViewAdapter(parent, recipes);
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    tvEmpty.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
