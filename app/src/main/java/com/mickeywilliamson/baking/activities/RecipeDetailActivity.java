@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -36,8 +35,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private int mRecipeId;
 
     private ExpandableListView expListView;
-    private RecipeExpandableListAdapter mAdapter;
-    private ArrayList<String> headerList;
 
     private static final String LIST_INSTANCE_STATE = "listview_state";
     public static final String EXTRA_RECIPE = "com.mickeywilliamson.baking.extra.RECIPE";
@@ -104,10 +101,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         // Directions in two lists, separated by collapsible headers.  This way, the ingredients
         // can be collapsed to view just the directions and vice versa.
         expListView = (ExpandableListView) findViewById(R.id.recipe_detail_list);
-        headerList = new ArrayList<String>();
-        headerList.add("Ingredients");
-        headerList.add("Directions");
-        mAdapter = new RecipeExpandableListAdapter(this, headerList, mRecipe.getIngredients(), mRecipe.getSteps());
+        ArrayList<String> headerList = new ArrayList<>();
+        headerList.add(getResources().getString(R.string.ingredient_header));
+        headerList.add(getResources().getString(R.string.step_header));
+        RecipeExpandableListAdapter mAdapter = new RecipeExpandableListAdapter(this, headerList, mRecipe.getIngredients(), mRecipe.getSteps());
         expListView.setAdapter(mAdapter);
 
         // Set both sections as expanded by default.

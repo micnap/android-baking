@@ -15,18 +15,13 @@
         android:id="@+id/step_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="5dp"
-        android:text="TextView"
-
-        />
+        android:paddingEnd="5dp"/>
 
     <TextView
         android:id="@+id/step_short_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textAlignment="textStart"
-        />
+        android:textAlignment="textStart"/>
 
 
     <RelativeLayout
@@ -37,8 +32,9 @@
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:paddingRight="20dp"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/recipe_image"
+            android:paddingEnd="20dp"
             app:srcCompat="@drawable/arrow"/>
 
     </RelativeLayout>

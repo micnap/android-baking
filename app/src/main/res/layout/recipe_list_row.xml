@@ -33,7 +33,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="@color/text"
             android:textSize="22sp"
             android:textStyle="bold"/>

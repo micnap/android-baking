@@ -31,8 +31,8 @@ public class RecipeWidgetConfigureActivity extends Activity {
     private static final String PREFS_NAME = "com.mickeywilliamson.baking.widgets.RecipeWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
     private static final String PREF_RECIPE = "_recipe";
-    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    Spinner mRecipeChoices;
+    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private Spinner mRecipeChoices;
     private RecipeSpinnerAdapter mAdapter;
 
     public RecipeWidgetConfigureActivity() {
@@ -101,8 +101,8 @@ public class RecipeWidgetConfigureActivity extends Activity {
         }
     }
 
-    // Convert the chosen recipe to a JSON string for storate in sharedPreferences.
-    static void saveRecipePref(Context context, int appWidgetId, Recipe recipe) {
+    // Convert the chosen recipe to a JSON string for storage in sharedPreferences.
+    private static void saveRecipePref(Context context, int appWidgetId, Recipe recipe) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         String jsonRecipe = Recipe.convertToJsonString(recipe);
         prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_RECIPE, jsonRecipe);
@@ -113,8 +113,7 @@ public class RecipeWidgetConfigureActivity extends Activity {
     static Recipe loadRecipePref(Context context, int appWidgetId) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         String json = prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_RECIPE, null);
-        Recipe recipe = Recipe.convertFromJsonString(json);
-        return recipe;
+        return Recipe.convertFromJsonString(json);
     }
 
     // Delete the recipe from sharedPreferences

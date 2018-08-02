@@ -270,7 +270,7 @@ public class StepDetailFragment extends Fragment {
     }
 
     /**
-     * Utilility function to stop and release the player.
+     * Utility function to stop and release the player.
      */
     private void releasePlayer() {
         mExoPlayer.stop();

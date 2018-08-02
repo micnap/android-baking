@@ -15,11 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mickeywilliamson.baking.R;
 import com.mickeywilliamson.baking.data.RequestInterface;
-import com.mickeywilliamson.baking.data.RecipeDeserializer;
 import com.mickeywilliamson.baking.models.Recipe;
 import com.squareup.picasso.Picasso;
 
@@ -189,7 +186,7 @@ public class RecipeListActivity extends AppCompatActivity {
      * This and the following two methods derived from
      * https://android--examples.blogspot.com/2017/03/android-recyclerview-in-different.html
      */
-    protected int calculateNumberOfColumns(int base){
+    private int calculateNumberOfColumns(int base){
         int columns = base;
         String screenSize = getScreenSizeCategory();
 
@@ -237,7 +234,7 @@ public class RecipeListActivity extends AppCompatActivity {
      * @return
      *      Returns the size of the device as a string (small, normal, large, xlarge).
      */
-    protected String getScreenSizeCategory(){
+    private String getScreenSizeCategory(){
         int screenLayout = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
 
         switch(screenLayout){

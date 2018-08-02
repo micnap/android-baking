@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 public class RecipeExpandableListAdapter extends BaseExpandableListAdapter {
 
-    Context mContext;
-    ArrayList<String> mHeaders;
-    ArrayList<Ingredient> mIngredients;
-    ArrayList<Step> mSteps;
+    private Context mContext;
+    private ArrayList<String> mHeaders;
+    private ArrayList<Ingredient> mIngredients;
+    private ArrayList<Step> mSteps;
 
     private static final String TAG = RecipeExpandableListAdapter.class.getSimpleName();
 
@@ -131,7 +131,7 @@ public class RecipeExpandableListAdapter extends BaseExpandableListAdapter {
         } else {
             TextView tvId = (TextView) view.findViewById(R.id.step_id);
             TextView tvShortDescription = (TextView) view.findViewById(R.id.step_short_description);
-            tvId.setText(String.valueOf(step.getStepId()) + ". ");
+            tvId.setText(String.valueOf(step.getStepId()));
             tvShortDescription.setText(step.getShortDescription());
         }
 

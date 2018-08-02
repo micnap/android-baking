@@ -5,4 +5,10 @@
     <string name="step_header">Directions:</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
+    <string name="recipe_image">Recipe Image</string>
+    <string name="app_logo">App Logo</string>
+    <string name="no_recipes">No recipes available</string>
+    <string name="btn_previous">Previous</string>
+    <string name="btn_next">Next</string>
+    <string name="no_ingredients">No ingredients available</string>
 </resources>

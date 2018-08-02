@@ -17,15 +17,14 @@ import java.util.ArrayList;
  * This class acts as the adapter for the widget's listview.  The listview widget displays the list
  * of ingredients for the chosen recipe in the app widget.
  */
-public class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Recipe mRecipe;
     private ArrayList<Ingredient> mIngredients;
     private Context mContext;
-    private int appWidgetId;
 
     public IngredientsRemoteViewsFactory(Context context, Intent intent) {
-        appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         mRecipe = RecipeWidgetConfigureActivity.loadRecipePref(context, appWidgetId);
         if (mRecipe != null) {
             mIngredients = mRecipe.getIngredients();

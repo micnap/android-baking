@@ -20,7 +20,6 @@ import com.mickeywilliamson.baking.models.Recipe;
 public class StepDetailActivity extends AppCompatActivity {
 
     private Recipe mRecipe;
-    private int mStep;
 
     private static final String TAG = StepDetailActivity.class.getSimpleName();
 
@@ -31,7 +30,7 @@ public class StepDetailActivity extends AppCompatActivity {
 
         // Get the recipe and step sent in from the RecipeDetailActivity.
         mRecipe = getIntent().getParcelableExtra(Recipe.RECIPE);
-        mStep = getIntent().getIntExtra(Recipe.STEP, 0);
+        int mStep = getIntent().getIntExtra(Recipe.STEP, 0);
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();

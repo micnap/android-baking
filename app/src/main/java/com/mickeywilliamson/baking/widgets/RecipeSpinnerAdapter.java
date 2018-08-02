@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 /**
  * Adapter for spinner dropdown from which the user can choose a recipe on the
- * congifiguration screen.
+ * configuration screen.
  */
-public class RecipeSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
+class RecipeSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
     public static ArrayList<Recipe> sRecipes;
     private Context mContext;

@@ -13,8 +13,6 @@ import com.mickeywilliamson.baking.activities.RecipeDetailActivity;
 import com.mickeywilliamson.baking.activities.RecipeListActivity;
 import com.mickeywilliamson.baking.models.Recipe;
 
-import java.util.ArrayList;
-
 /**
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in {@link RecipeWidgetConfigureActivity RecipeWidgetConfigureActivity}
