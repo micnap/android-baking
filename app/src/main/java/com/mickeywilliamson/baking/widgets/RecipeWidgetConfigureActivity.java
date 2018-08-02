@@ -42,14 +42,17 @@ public class RecipeWidgetConfigureActivity extends Activity {
 
     private static final String PREFS_NAME = "com.mickeywilliamson.baking.widgets.RecipeWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
-    private static final String PREF_INGREDIENTS = "_ingredients";
-    private static final String PREF_RECIPE = "_recipe_id";
+    private static final String PREF_RECIPE = "_recipe";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    EditText mAppWidgetText;
     Spinner mRecipeChoices;
     private RecipeSpinnerAdapter mAdapter;
-    ArrayList<Ingredient> ingredients;
 
+    public RecipeWidgetConfigureActivity() {
+        super();
+    }
+
+    // When the ADD WIDGET button is clicked in the config screen,
+    // create the app widget.
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             final Context context = RecipeWidgetConfigureActivity.this;
@@ -66,11 +69,6 @@ public class RecipeWidgetConfigureActivity extends Activity {
         }
     };
 
-    public RecipeWidgetConfigureActivity() {
-        super();
-    }
-
-
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -84,9 +82,10 @@ public class RecipeWidgetConfigureActivity extends Activity {
         mRecipeChoices = (Spinner) findViewById(R.id.spinner_recipe_choices);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 
+        // Load the list of recipes for the dropdown list in the config screen from the web.
         loadJSON(this, mRecipeChoices);
 
-
+        // When an item is selected in the list, store the choice in a sharedPreference.
         mRecipeChoices.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -114,6 +113,7 @@ public class RecipeWidgetConfigureActivity extends Activity {
         }
     }
 
+    // Convert the chosen recipe to a JSON string for storate in sharedPreferences.
     static void saveRecipePref(Context context, int appWidgetId, Recipe recipe) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         String jsonRecipe = Recipe.convertToJsonString(recipe);
@@ -121,6 +121,7 @@ public class RecipeWidgetConfigureActivity extends Activity {
         prefs.apply();
     }
 
+    // Get the chosen recipe from sharedPreferences and convert from a JSON string to a Recipe object.
     static Recipe loadRecipePref(Context context, int appWidgetId) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         String json = prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_RECIPE, null);
@@ -128,12 +129,14 @@ public class RecipeWidgetConfigureActivity extends Activity {
         return recipe;
     }
 
+    // Delete the recipe from sharedPreferences
     static void deleteRecipePref(Context context, int appWidgetId) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.remove(PREF_PREFIX_KEY + appWidgetId + PREF_RECIPE);
         prefs.apply();
     }
 
+    // Load the list of recipes a web endpoint using Retrofit.
     private void loadJSON(final RecipeWidgetConfigureActivity parent, final Spinner spinner) {
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -148,8 +151,8 @@ public class RecipeWidgetConfigureActivity extends Activity {
             @Override
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
 
-                ArrayList<Recipe> recipes = response.body();
-                mAdapter = new RecipeSpinnerAdapter(recipes, parent);
+                // Load the list of recipes into the config screen's dropdown.
+                mAdapter = new RecipeSpinnerAdapter(response.body(), parent);
                 spinner.setAdapter(mAdapter);
             }
 

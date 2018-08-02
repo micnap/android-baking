@@ -4,19 +4,18 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.mickeywilliamson.baking.R;
-import com.mickeywilliamson.baking.activities.RecipeDetailActivity;
 import com.mickeywilliamson.baking.models.Ingredient;
 import com.mickeywilliamson.baking.models.Recipe;
 
 import java.util.ArrayList;
 
 /**
- * This class acts as the adapter for the widget's listview.
+ * This class acts as the adapter for the widget's listview.  The listview widget displays the list
+ * of ingredients for the chosen recipe in the app widget.
  */
 public class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
@@ -47,7 +46,9 @@ public class IngredientsRemoteViewsFactory implements RemoteViewsService.RemoteV
         remoteViews.setTextViewText(R.id.measure, ingredient.getMeasure());
         remoteViews.setTextViewText(R.id.ingredient, ingredient.getIngredient());
 
-        // Converting the Recipe object to JSON for passing to the activity.
+        // Clicking on an item in the listview of ingredients will launch the app
+        // and load the recipe in the RecipeDetailActivity.
+        // Converts the Recipe object to JSON for passing to the activity.
         // This sidesteps a bug in Android that prevents objects from being passed from
         // app widgets to activities.
         Bundle extras = new Bundle();

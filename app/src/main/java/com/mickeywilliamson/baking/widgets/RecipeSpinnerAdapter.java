@@ -1,9 +1,6 @@
 package com.mickeywilliamson.baking.widgets;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +13,10 @@ import com.mickeywilliamson.baking.models.Recipe;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter for spinner dropdown from which the user can choose a recipe on the
+ * congifiguration screen.
+ */
 public class RecipeSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
     public static ArrayList<Recipe> sRecipes;

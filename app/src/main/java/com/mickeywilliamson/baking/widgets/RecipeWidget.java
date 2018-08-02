@@ -20,6 +20,8 @@ import java.util.ArrayList;
 /**
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in {@link RecipeWidgetConfigureActivity RecipeWidgetConfigureActivity}
+ *
+ * Allows the user to choose what recipe they'd like to see in the home screen widget.
  */
 public class RecipeWidget extends AppWidgetProvider {
 
@@ -30,12 +32,15 @@ public class RecipeWidget extends AppWidgetProvider {
 
         Intent intent = new Intent(context, IngredientsService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-
         views.setRemoteAdapter(R.id.ingredients_listview, intent);
         views.setEmptyView(R.id.ingredients_listview, R.id.empty_text);
 
+        // Get the chosen recipe from sharedpreferences.
         Recipe recipe = RecipeWidgetConfigureActivity.loadRecipePref(context, appWidgetId);
-        views.setTextViewText(R.id.recipe_widget_title, recipe.getName());
+
+        if (recipe != null) {
+            views.setTextViewText(R.id.recipe_widget_title, recipe.getName());
+        }
 
         Intent openAppIntent;
         // Open RecipeListActivity if recipe happens to be empty.
@@ -46,8 +51,13 @@ public class RecipeWidget extends AppWidgetProvider {
             openAppIntent = new Intent(context, RecipeDetailActivity.class);
             openAppIntent.putExtra(Recipe.RECIPE, recipe);
         }
+        // When the user clicks on the title of the recipe in the widget, open up the app's
+        // RecipeDetailScreen with the recipe loaded.
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.recipe_widget_title, pendingIntent);
+
+        // Set a pendingIntentTemplate for the items in the listview that display the list
+        // of ingredients.  (More performant)
         views.setPendingIntentTemplate(R.id.ingredients_listview, pendingIntent);
 
         // Instruct the widget manager to update the widget
