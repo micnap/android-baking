@@ -145,12 +145,14 @@ public class RecipeDetailActivity extends AppCompatActivity {
                     }
                 // On small devices, load the direction into a new screen.
                 } else {
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, StepDetailActivity.class);
-                    intent.putExtra(Recipe.RECIPE, mRecipe);
-                    intent.putExtra(Recipe.STEP, childPosition);
+                    if (groupPosition == 1) {
+                        Context context = v.getContext();
+                        Intent intent = new Intent(context, StepDetailActivity.class);
+                        intent.putExtra(Recipe.RECIPE, mRecipe);
+                        intent.putExtra(Recipe.STEP, childPosition);
 
-                    context.startActivity(intent);
+                        context.startActivity(intent);
+                    }
                 }
 
                 return false;
