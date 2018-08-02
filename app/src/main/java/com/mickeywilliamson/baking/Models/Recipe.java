@@ -3,9 +3,13 @@ package com.mickeywilliamson.baking.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mickeywilliamson.baking.R;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Recipe implements Parcelable {
 
@@ -14,8 +18,10 @@ public class Recipe implements Parcelable {
     public static final String BASE_URL = "http://micnap.com/";
     public static final String PATH = "recipes.json";
 
-    public static final String RECIPE = "recipe";
+    public static final String RECIPE = "com.mickeywilliamson.baking.models.RECIPE";
     public static final String STEP = "step";
+
+    public static final int INVALID_RECIPE_ID = -1;
 
     private int id;
     private String name;
@@ -148,7 +154,16 @@ public class Recipe implements Parcelable {
         }
     };
 
-    // Since most of the recipes in the sample data don't have images, providing defaults here.
+    /**
+     * Utility function for providing default images for the sample data given for the assignment
+     * since none of them include images.
+     *
+     * @param id
+     *      The recipe's id.
+     *
+     * @return
+     *      A drawable for the id.
+     */
     public static int getPlaceholderImage(int id) {
 
         switch (id) {
@@ -163,5 +178,38 @@ public class Recipe implements Parcelable {
             default:
                 return R.drawable.default_recipe;
         }
+    }
+
+    /**
+     * Convert a recipe from a JSON string to a Recipe object.
+     *
+     * @param jsonString
+     *      The JSON string to be converted to a Recipe object.
+     *
+     * @return
+     *      A recipe object.
+     */
+    public static <T> T convertFromJsonString(String jsonString){
+        if (jsonString == null) {
+            return null;
+        }
+        Type type = new TypeToken<Recipe>(){}.getType();
+        return new Gson().fromJson(jsonString,type);
+    }
+
+    /**
+     * Converts a recipe from a Recipe object to a JSON string.
+     *
+     * @param object
+     *      The recipe to be converted.
+     *
+     * @return
+     *      The recipe as a JSON string.
+     */
+    public static String convertToJsonString(Object object){
+        if (object == null) {
+            return null;
+        }
+        return new Gson().toJson(object);
     }
 }

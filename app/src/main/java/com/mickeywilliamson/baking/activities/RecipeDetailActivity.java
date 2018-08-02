@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -32,12 +33,14 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private Recipe mRecipe;
     private Parcelable mListInstanceState;
+    private int mRecipeId;
 
     private ExpandableListView expListView;
     private RecipeExpandableListAdapter mAdapter;
     private ArrayList<String> headerList;
 
     private static final String LIST_INSTANCE_STATE = "listview_state";
+    public static final String EXTRA_RECIPE = "com.mickeywilliamson.baking.extra.RECIPE";
     private static final String TAG = RecipeDetailActivity.class.getSimpleName();
 
     @Override
@@ -48,16 +51,23 @@ public class RecipeDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        // Get the recipe from the RecipeListActivity's intent.
-        // If that's empty, then there was a config change (rotation) and we restore
-        // the recipe from the savedInstanceState.
-        mRecipe = getIntent().getParcelableExtra(Recipe.RECIPE);
+        // If a config change was made, restore the recipe from the savedInstanceState
         if (savedInstanceState != null) {
             if (mRecipe == null) {
                 mRecipe = savedInstanceState.getParcelable(Recipe.RECIPE);
             }
             // Restore the scrolling position of the ExpandableListView.
             mListInstanceState = savedInstanceState.getParcelable(LIST_INSTANCE_STATE);
+        // If the click to get here came from the RecipeDetailList, get the recipe
+        // from the intent.
+        } else if (getIntent().getParcelableExtra(Recipe.RECIPE) != null) {
+            mRecipe = getIntent().getParcelableExtra(Recipe.RECIPE);
+        // If the click to get here came from the app widget, the recipe will be
+        // in JSON form and needs to be converted to a Recipe object.  The object
+        // couldn't be added as a Parcelable because of a bug in sending parcelables from
+        // intents to activities.
+        } else if (getIntent().getStringExtra(Recipe.RECIPE) != null) {
+            mRecipe = Recipe.convertFromJsonString(getIntent().getStringExtra(Recipe.RECIPE));
         }
 
         setTitle(mRecipe.getName());
