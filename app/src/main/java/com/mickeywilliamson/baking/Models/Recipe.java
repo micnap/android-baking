@@ -12,10 +12,10 @@ import java.util.ArrayList;
 
 public class Recipe implements Parcelable {
 
-    //public static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/";
-    //public static final String PATH = "topher/2017/May/59121517_baking/baking.json";
-    public static final String BASE_URL = "http://micnap.com/";
-    public static final String PATH = "recipes.json";
+    public static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/";
+    public static final String PATH = "topher/2017/May/59121517_baking/baking.json";
+    //public static final String BASE_URL = "http://micnap.com/";
+    //public static final String PATH = "recipes.json";
 
     public static final String RECIPE = "com.mickeywilliamson.baking.models.RECIPE";
     public static final String STEP = "step";
