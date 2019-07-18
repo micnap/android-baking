@@ -20,8 +20,6 @@ public class Recipe implements Parcelable {
     public static final String RECIPE = "com.mickeywilliamson.baking.models.RECIPE";
     public static final String STEP = "step";
 
-    public static final int INVALID_RECIPE_ID = -1;
-
     private int id;
     private String name;
     private int servings;
