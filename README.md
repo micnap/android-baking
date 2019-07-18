@@ -12,7 +12,7 @@ When the user clicks on a recipe step from the list, the step's details (video, 
 <img src="https://github.com/micnap/android-project3/blob/master/repoimages/tablet-recipe-details.png" width="450"><br><br>
 
 The step video displays full screen in landscape mode on the phone.
-<br><br><img src="https://github.com/micnap/android-project3/blob/master/repoimages/phone-step-video-landscape.png" width="250px"><br><br>
+<br><br><img src="https://github.com/micnap/android-project3/blob/master/repoimages/phone-step-video-landscape.png" width="450px"><br><br>
 
 The app also provides a configurable widget for adding the indgredients of a recipe to the home screen.
 <br><br><img src="https://github.com/micnap/android-project3/blob/master/repoimages/phone-widget-config.png" width="250px">
