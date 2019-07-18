@@ -39,7 +39,7 @@ Topics learned through the project include:
 * GSON
 * Retrofit
 
-#Demo video
+# Demo video
 Demo video of app:
 <br><br><a href="http://www.youtube.com/watch?feature=player_embedded&v=lsRxyQ9o_eA
 " target="_blank"><img src="http://img.youtube.com/vi/lsRxyQ9o_eA/0.jpg"
