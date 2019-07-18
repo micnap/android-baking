@@ -40,7 +40,7 @@ Topics learned through the project include:
 * Retrofit
 
 #Demo video
-Demo video of app: https://www.youtube.com/watch?v=lsRxyQ9o_eA
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=lsRxyQ9o_eA
+Demo video of app:
+<br><br><a href="http://www.youtube.com/watch?feature=player_embedded&v=lsRxyQ9o_eA
 " target="_blank"><img src="http://img.youtube.com/vi/lsRxyQ9o_eA/0.jpg"
 alt="Demo of Baking App" width="240" height="180" border="10" /></a>
