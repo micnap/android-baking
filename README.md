@@ -30,6 +30,7 @@ Topics learned through the project include:
 * Espresso for UI testing
 * Third party libraries - Retrofit and GSON
 * Saving and retrieving from preferences
+* Master-Detail flow pattern
 
 # Image resources:
 * Recipe mages come from videos screenshots
