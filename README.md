@@ -1,7 +1,7 @@
 This Android app fulfills the requirements for the fourth project of the Udacity's Android Developer Nanodegree.
 
 # Overview:
-It retrieves a list of recipes from a [json file on the internet](https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json) and displays them in cardview.
+It retrieves a list of recipes from a [JSON file on the internet](https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json) and displays them in cardview.
 <br><br><img src="https://github.com/micnap/android-project3/blob/master/repoimages/phone-recipe-list.png" width="250px"><br><br>
 
 Clicking on a recipe card takes the user to a detail view of the recipe which includes a list of ingredients and a recipe directions.
@@ -29,6 +29,7 @@ Topics learned through the project include:
 * Data retrieval from network
 * Espresso for UI testing
 * Third party libraries - Retrofit and GSON
+* Saving and retrieving from preferences
 
 # Image resources:
 * Recipe mages come from videos screenshots
